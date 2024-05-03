@@ -8,7 +8,7 @@ function App() {
     <header>
       <MainNavBar />
     </header>
-    <main style={{height:"calc(100dvh - 100px)"}} className="bg-gray-100">
+    <main style={{height:"calc(100dvh - 100px)"}}>
       <Outlet />
     </main>
     </>

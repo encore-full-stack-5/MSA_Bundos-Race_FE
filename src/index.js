@@ -5,6 +5,7 @@ import './index.css';
 import App from './App';
 import Home from './pages/Home';
 import ProductSearch from './pages/ProductSearch';
+import ProductDetail from './pages/ProductDetail';
 import Test1 from './pages/test1';
 import Test2 from './pages/test2';
 
@@ -14,7 +15,8 @@ const router = createBrowserRouter([
     element: <App/>,
     children: [
       { path: "/home", element: <Home/> },
-      { path: "/search/category", element: <ProductSearch/> },
+      { path: "/search/category/*", element: <ProductSearch/> },
+      { path: "/products/*", element: <ProductDetail/> },
       { path: "/1", element: <Test1/> },
       { path: "/2", element: <Test2/> },
     ]

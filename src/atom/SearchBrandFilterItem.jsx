@@ -1,12 +1,12 @@
-import { Link } from "react-router-dom"
+// import { Link } from "react-router-dom"
 
 const SearchBrandFilterItem = (props) => {
     return (
-        <Link to={props.link}>
+        // <Link to={props.link}>
             <div>
                 {props.displayName}
             </div>
-        </Link>
+        // </Link>
     )
 }
 export default SearchBrandFilterItem

@@ -12,7 +12,7 @@ const MainNavBar = () => {
                     className="flex flex-col w-full h-full text-white text-xs font-bold"
                 >
                     <div 
-                        style={{paddingLeft:"12vw", paddingRight:"12vw", flex: "0.35"}}
+                        style={{paddingLeft:"12vw", paddingRight:"12vw", marginLeft:"1vw", marginRight:"1vw", flex: "0.35"}}
                         className="flex flex-row justify-between items-center border-b border-opacity-30 border-gray-500"
                     >
                         <Link to={"/1"}>
@@ -40,7 +40,7 @@ const MainNavBar = () => {
                     </div>
 
                     <div 
-                        style={{paddingLeft:"12vw", paddingRight:"12vw", flex: "0.65"}}
+                        style={{paddingLeft:"12vw", paddingRight:"12vw", marginLeft:"1vw", marginRight:"1vw", flex: "0.65"}}
                         className="flex flex-row justify-between items-center"
                     >
                         <div className="flex flex-row gap-6 items-center">
