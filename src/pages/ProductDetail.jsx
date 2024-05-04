@@ -1,5 +1,7 @@
 import ProductOptionGroup from '../components/ProductOptionGroup'
 import ReviewSmallBox from '../components/ReviewSmallBox'
+import ReviewPopupBox from '../components/ReviewPopupBox'
+import { useState } from 'react';
 
 const ProductDetail = () => {
     const testImageArr = ["", "", "", ""];
@@ -13,16 +15,19 @@ const ProductDetail = () => {
                     id: 1,
                     name: "대과(14mm 이하)",
                     price: 0,
+                    qty: 100
                 },
                 {
                     id: 2,
                     name: "특대(15mm 이상)",
                     price: 0,
+                    qty: 100
                 },
                 {
                     id: 3,
                     name: "왕특(18mm 이상)",
                     price: 0,
+                    qty: 100
                 },
             ],
         },
@@ -35,16 +40,19 @@ const ProductDetail = () => {
                     id: 1,
                     name: "250g",
                     price: 0,
+                    qty: 100
                 },
                 {
                     id: 2,
                     name: "500g(250g2팩)",
                     price: 12500,
+                    qty: 1
                 },
                 {
                     id: 3,
                     name: "1kg(250g4팩)",
                     price: 29500,
+                    qty: 0
                 },
             ],
         },
@@ -79,6 +87,34 @@ const ProductDetail = () => {
             content:"",
         },
     ];
+
+    const [ReviewPopup, setReviewPopup] = useState("0");
+
+    const SetReviewSmallComponent = (props) => {
+        if(testReviewArr.length > props.n) {
+            return (
+                <ReviewSmallBox
+                    id={testReviewArr[props.n].id}
+                    rating={testReviewArr[props.n].rating}
+                    name={testReviewArr[props.n].name}
+                    date={testReviewArr[props.n].date}
+                    content={testReviewArr[props.n].content}
+                    onClick={setReviewPopup}
+                />
+            );
+        }
+        return "";
+    }
+    const SetReviewPopupComponent = (props) => {
+        if (ReviewPopup > 0) {
+            return (
+                <ReviewPopupBox
+                    onClick={setReviewPopup}
+                />
+            );
+        }
+        return "";
+    }
 
     return (
         <>
@@ -158,43 +194,25 @@ const ProductDetail = () => {
                         <div className='flex flex-row'>
                             <div className='flex flex-col flex-1'>
                                 <div>
-                                    <ReviewSmallBox
-                                        id={testReviewArr[0].id}
-                                        rating={testReviewArr[0].rating}
-                                        name={testReviewArr[0].name}
-                                        date={testReviewArr[0].date}
-                                        content={testReviewArr[0].content}/>
+                                    <SetReviewSmallComponent n="0"/>
                                     <div className='border-t border-gray-200 my-4'/>
-                                    <ReviewSmallBox
-                                        id={testReviewArr[1].id}
-                                        rating={testReviewArr[1].rating}
-                                        name={testReviewArr[1].name}
-                                        date={testReviewArr[1].date}
-                                        content={testReviewArr[1].content}/>
+                                    <SetReviewSmallComponent n="1"/>
                                 </div>
                             </div>
                             <div className='border-r border-gray-200 mx-5'/>
                             <div className='flex flex-col flex-1'>
                                 <div>
-                                    <ReviewSmallBox
-                                        id={testReviewArr[2].id}
-                                        rating={testReviewArr[2].rating}
-                                        name={testReviewArr[2].name}
-                                        date={testReviewArr[2].date}
-                                        content={testReviewArr[2].content}/>
+                                    <SetReviewSmallComponent n="2"/>
                                     <div className='border-t border-gray-200 my-4'/>
-                                    <ReviewSmallBox
-                                        id={testReviewArr[3].id}
-                                        rating={testReviewArr[3].rating}
-                                        name={testReviewArr[3].name}
-                                        date={testReviewArr[3].date}
-                                        content={testReviewArr[3].content}/>
+                                    <SetReviewSmallComponent n="3"/>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <SetReviewPopupComponent />
         </>
     )
 }

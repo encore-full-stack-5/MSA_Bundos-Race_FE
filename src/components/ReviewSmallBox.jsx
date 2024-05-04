@@ -1,23 +1,10 @@
+import RatingToStart from "../atom/RatingToStar"
+
 const ReviewSmallBox = (props) => {
-
-    const makeStar = () => {
-        let star = ""
-        for(let i=0; i<props.rating; i++) {
-            star += "★"
-        }
-        for(let i=0; i<5-props.rating; i++) {
-            star += "☆"
-        }
-        return star
-    }
-
-
     return (
-        <div className="flex flex-row gap-3">
+        <div className="flex flex-row gap-3 cursor-pointer" onClick={() => props.onClick(props.id)}>
             <div className="flex-1 flex flex-col">
-                <div style={{fontSize:"14pt", color:"orangered"}} className="flex items-center">
-                    {makeStar()}&nbsp;<span className="font-bold text-sm text-black">{props.rating}</span>
-                </div>
+                <RatingToStart rating={props.rating}/>
                 <div className="flex flex-row gap-2 text-gray-400 text-xs">
                     <div>{props.name}</div>
                     <div>{props.date}</div>
