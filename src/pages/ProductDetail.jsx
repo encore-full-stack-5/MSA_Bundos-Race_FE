@@ -1,6 +1,7 @@
 import ProductOptionGroup from '../components/ProductOptionGroup'
 import ReviewSmallBox from '../components/ReviewSmallBox'
 import ReviewPopupBox from '../components/ReviewPopupBox'
+import TopButton from '../components/TopButton';
 import { useState } from 'react';
 
 const ProductDetail = () => {
@@ -118,7 +119,7 @@ const ProductDetail = () => {
 
     return (
         <>
-            <div style={{ paddingLeft:"13vw", paddingRight:"13vw"}} className='flex flex-col items-center'>
+            <div style={{ paddingLeft:"13vw", paddingRight:"13vw"}} className='flex flex-col items-center pb-10'>
                 <div style={{maxWidth:"900px"}} className='w-full'>
                     <div className="border border-gray-300 mt-5 mb-5 flex flex-row">
                         <div className="flex flex-col justify-start flex-1 border-r border-gray-300">
@@ -139,6 +140,7 @@ const ProductDetail = () => {
                                 ))}
                             </div>
                         </div>
+
                         <div className="flex flex-col justify-start flex-1">
                             <div className="p-6">
                                 <div className="font-bold text-lg">
@@ -187,6 +189,7 @@ const ProductDetail = () => {
                             </div>
                         </div>
                     </div>
+
                     <div className='flex flex-col'>
                         <div className='font-bold my-3' style={{fontSize:"11.5pt"}}>
                             최근 리뷰<span className='text-orange-500'>({testReviewArr.length})</span>
@@ -208,9 +211,48 @@ const ProductDetail = () => {
                                 </div>
                             </div>
                         </div>
+
+                        <div className='font-bold my-3 pt-5 text-xl'>
+                            상품 상세
+                        </div>
+                        <div className='bg-gray-100' style={{height:"800px"}}/>
+
+                        {/* <div className='font-bold my-3 pt-16 text-xl'>
+                            상품 리뷰
+                        </div>
+                        <div className='bg-gray-100 p-8 flex flex-row gap-5 justify-around h-60'>
+                            <div className='flex flex-col items-center'>
+                                <div className='text-sm font-bold flex-1'>
+                                    사용자 총 평점
+                                </div>
+                                <div className='flex flex-col gap-3 justify-center text-center' style={{flex:"3"}}>
+                                    <div className='text-5xl' style={{color:"orangered"}}>★★★★★</div>
+                                    <div className='text-4xl text-gray-300'>
+                                        <span className='text-black font-bold'>5.0</span>/5
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='flex flex-col items-center'>
+                                <div className='text-sm font-bold flex-1'>
+                                    전체 리뷰수
+                                </div>
+                                <div className='flex flex-col gap-3 justify-center text-center' style={{flex:"3"}}>
+                                </div>
+                            </div>
+                            <div className='flex flex-col'>
+                                <div className='text-sm font-bold flex-1'>
+                                    평점 비율
+                                </div>
+                                <div className='flex-3'>
+
+                                </div>
+                            </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
+
+            <TopButton />
 
             <SetReviewPopupComponent />
         </>

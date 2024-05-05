@@ -14,11 +14,11 @@ const ReviewPopup = (props) => {
     const [largeImage, setLargeImage] = useState(0);
 
     const ReviewLargeImage = () => {
-        return testImageArr.length == 0 ? (<div className="w-3/5" />) : (<img src={testImageArr[largeImage]} alt="" className="w-3/5 object-contain" />)
+        return testImageArr.length === 0 ? (<div className="w-3/5 flex justify-center items-center text-gray-400">이미지가 없는 리뷰입니다</div>) : (<img src={testImageArr[largeImage]} alt="" className="w-3/5 object-contain" />)
     }
 
     return (
-        <div className="absolute left-0 top-0 w-dvw h-dvh bg-black bg-opacity-60">
+        <div className="fixed left-0 top-0 w-full h-full bg-black bg-opacity-60">
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-row bg-gray-200" style={{width:"920px", height:"540px"}}>
                 <ReviewLargeImage />
                 <div className="flex flex-col w-2/5 justify-between pl-5 py-3 border-l border-gray-300 bg-white">

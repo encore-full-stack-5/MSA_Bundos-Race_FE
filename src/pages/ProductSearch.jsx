@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from "react-router-dom"
 // import SearchBrandFilterItem from '../atom/SearchBrandFilterItem'
 import SearchProductItem from '../components/SearchProductItem'
+import TopButton from '../components/TopButton'
 
 const ProductSearch = () => {
     const testBrandArr = ["오뚜기", "CJ", "청정원", "풀무원", "농심", "동원"];
@@ -181,6 +182,8 @@ const ProductSearch = () => {
                     </div>
                 </div>
             </div>
+
+            <TopButton />
         </>
     )
 }
