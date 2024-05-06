@@ -85,10 +85,14 @@ const ProductSearch = () => {
             beforeBrand.style.color = "rgb(55,65,81)"
             beforeBrand.style.fontWeight = 400;
         }
-        setBrandFilter(n);
-        const afterBrand = document.getElementById("brand"+n);
-        afterBrand.style.color = "black"
-        afterBrand.style.fontWeight = 600;
+        if (brandFilter === n) {
+            setBrandFilter(null);
+        } else {
+            setBrandFilter(n);
+            const afterBrand = document.getElementById("brand"+n);
+            afterBrand.style.color = "black"
+            afterBrand.style.fontWeight = 600;
+        }
     }
 
     useEffect(() => {
