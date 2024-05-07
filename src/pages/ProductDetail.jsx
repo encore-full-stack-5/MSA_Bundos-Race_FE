@@ -1,8 +1,9 @@
 import ProductOptionGroup from '../components/ProductOptionGroup'
 import ReviewSmallBox from '../components/ReviewSmallBox'
 import ReviewPopupBox from '../components/ReviewPopupBox'
+import ReviewFullBox from '../components/ReviewFullBox'
 import TopButton from '../components/TopButton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const ProductDetail = () => {
     const testImageArr = ["", "", "", ""];
@@ -65,6 +66,7 @@ const ProductDetail = () => {
             date:"24.04.1",
             rating:"1",
             content:"별로에요",
+            options:["크기선택:대과(14mm이하)", "중량선택:500g(250g2팩)"]
         },
         {
             id:2,
@@ -72,6 +74,7 @@ const ProductDetail = () => {
             date:"24.03.13",
             rating:"4",
             content:"내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용",
+            options:["크기선택:특대(15mm 이상)", "중량선택:250g"]
         },
         {
             id:3,
@@ -79,6 +82,7 @@ const ProductDetail = () => {
             date:"24.04.12",
             rating:"5",
             content:"아무튼많은내용아무튼많은내용아무튼많은내용아무튼많은내용아무튼많은내용아무튼많은내용아무튼많은내용아무튼많은내용아무튼많은내용아무튼많은내용아무튼많은내용아무튼많은내용아무튼많은내용아무튼많은내용",
+            options:["크기선택:대과(14mm이하)", "중량선택:250g"]
         },
         {
             id:4,
@@ -86,11 +90,20 @@ const ProductDetail = () => {
             date:"24.03.28",
             rating:"1",
             content:"",
+            options:["크기선택:왕특(18mm 이상)", "중량선택:1kg(250g4팩)"]
         },
     ];
 
+    const [ReviewOrder, setReviewOrder] = useState("0");
     const [ReviewPopup, setReviewPopup] = useState("0");
 
+    const ChangeReivewOrder = (n) => {
+        const beforeElement = document.getElementById("reviewOrder"+ReviewOrder);
+        beforeElement.style.color = "rgb(209 213 219)";
+        setReviewOrder(n);
+        const afterElement = document.getElementById("reviewOrder"+n);
+        afterElement.style.color = "black";
+    }
     const SetReviewSmallComponent = (props) => {
         if(testReviewArr.length > props.n) {
             return (
@@ -106,6 +119,19 @@ const ProductDetail = () => {
         }
         return "";
     }
+    const SetReviewFullComponent = (props) => {
+        return (
+            <ReviewFullBox
+                id={props.review.id}
+                rating={props.review.rating}
+                name={props.review.name}
+                date={props.review.date}
+                content={props.review.content}
+                options={props.review.options}
+                onClick={setReviewPopup}
+            />
+        );
+    }
     const SetReviewPopupComponent = (props) => {
         if (ReviewPopup > 0) {
             return (
@@ -117,12 +143,20 @@ const ProductDetail = () => {
         return "";
     }
 
+    // const observer = new IntersectionObserver(()=>{}, {root: document.getElementById("upperBox")});
+    // observer.observe()
+
+    useEffect(() => {
+        ChangeReivewOrder(0);   
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
+
     return (
         <>
             <div style={{ paddingLeft:"13vw", paddingRight:"13vw"}} className='flex flex-col items-center pb-10'>
                 <div style={{maxWidth:"900px"}} className='w-full'>
                     <div className='flex flex-col'>
-                        <div>
+                        <div id="upperBox">
                             <div className="border border-gray-300 mt-5 mb-5 flex flex-row">
                                 <div className="flex flex-col justify-start flex-1 border-r border-gray-300">
                                     <img 
@@ -193,7 +227,8 @@ const ProductDetail = () => {
                             </div>
 
                             <div className='font-bold py-3' style={{fontSize:"11.5pt"}}>
-                                최근 포토 리뷰<span className='text-orange-500'>({testReviewArr.length})</span>
+                                최근 포토 리뷰
+                                {/*<span className='text-orange-500'>({testReviewArr.length})</span>*/}
                             </div>
                             <div className='flex flex-row'>
                                 <div className='flex flex-col flex-1'>
@@ -229,21 +264,24 @@ const ProductDetail = () => {
                             </div>
                         </div>
 
-                        <div className='font-bold my-3 pt-4 text-xl'>
+                        <div id="viewDetail" className='font-bold my-3 pt-4 text-xl'>
                             상품 상세
                         </div>
                         <div className='bg-gray-100' style={{height:"800px"}}/>
 
-                        <div className='flex flex-row justify-between my-3 pt-4'>
+                        <div id="viewReview" className='flex flex-row justify-between my-3 pt-4'>
                             <div className='font-bold text-xl'>
-                                {"리뷰 123건"}
+                                {"리뷰 " + testReviewArr.length + "건"}
                             </div>
                             <div className='flex flex-row items-center'>
-                                <div className='font-bold text-black px-2 text-sm h-fit'>최신순</div>
+                                <div id="reviewOrder0" onClick={() => ChangeReivewOrder(0)} 
+                                    className='font-bold text-gray-300 px-2 text-sm h-fit cursor-pointer'>최신순</div>
                                 <div className='border-r border-gray-300 h-3' />
-                                <div className='font-bold text-gray-300 px-2 text-sm h-fit'>평점 높은순</div>
+                                <div id="reviewOrder1" onClick={() => ChangeReivewOrder(1)} 
+                                    className='font-bold text-gray-300 px-2 text-sm h-fit cursor-pointer'>평점 높은순</div>
                                 <div className='border-r border-gray-300 h-3' />
-                                <div className='font-bold text-gray-300 px-2 text-sm h-fit'>평점 낮은순</div>
+                                <div id="reviewOrder2" onClick={() => ChangeReivewOrder(2)} 
+                                    className='font-bold text-gray-300 px-2 text-sm h-fit cursor-pointer'>평점 낮은순</div>
                             </div>
                         </div>
                         <>{/* <div className='font-bold my-3 pt-16 text-xl'>
@@ -277,7 +315,11 @@ const ProductDetail = () => {
                                 </div>
                             </div>
                         </div> */}</>
-
+                        <div className='flex flex-col'>
+                            {testReviewArr.map((e) => (
+                                <SetReviewFullComponent review={e}/>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
