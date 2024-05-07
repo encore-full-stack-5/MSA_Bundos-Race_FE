@@ -38,9 +38,9 @@ const SearchProductItem = (props) => {
                     판매자 : {props.seller}
                 </div>
                 <div className="flex flex-row text-sm text-gray-500 items-center">
-                    <div>리뷰 <span className="pr-2 text-emerald-500">{props.reviewCount}</span></div>
-                    <div>· 구매건수 <span className="pr-2 text-emerald-500">{props.sellCount}</span></div>
-                    <div>· 등록일 <span className="pr-2 text-emerald-500">{props.createdAt}</span></div>
+                    {/* <div>리뷰 <span className="pr-2 text-emerald-500">{props.reviewCount}</span></div>
+                    <div>· 구매건수 <span className="pr-2 text-emerald-500">{props.sellCount}</span></div> */}
+                    <div>{/*"· "*/}등록일 <span className="pr-2 text-emerald-500">{props.createdAt}</span></div>
                     <div className="pr-2"> · </div>
                     <div className="cursor-pointer flex flex-row items-center">
                         <svg width="14" height="14" fill="none" xmlns="http://www.w3.org/2000/svg" class="report_svg_report__xPbmh"><path clip-rule="evenodd" d="M6.999 1A4.999 4.999 0 0 0 2 6v4h10V6a5 5 0 0 0-5.001-5Z" stroke="#999" stroke-linejoin="round"></path><path d="M6.5 3.5a2 2 0 0 0-2 2" stroke="#999"></path><path clip-rule="evenodd" d="M1 13h12v-3H1v3Z" stroke="#999"></path></svg>

@@ -68,7 +68,7 @@ const ProductSearch = () => {
             createdAt: "2024. 5."
         },
     ];
-    const [orderBy, setOrder] = useState(0);
+    const [orderBy, setOrder] = useState(1);
     const [brandFilter, setBrandFilter] = useState(null);
 
     const changeOrder = (n) => {
@@ -96,7 +96,7 @@ const ProductSearch = () => {
     }
 
     useEffect(() => {
-        changeOrder(0);
+        changeOrder(1);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
@@ -147,9 +147,9 @@ const ProductSearch = () => {
                     <div
                         style={{fontSize:"10pt", color:"rgb(140,140,140)"}}
                         className="pt-5 pb-3 flex flex-row gap-3">
-                        <div id="order0" onClick={() => changeOrder(0)} className='cursor-pointer'>
+                        {/* <div id="order0" onClick={() => changeOrder(0)} className='cursor-pointer'>
                             · 판매 많은순
-                        </div>
+                        </div> */}
                         <div id="order1" onClick={() => changeOrder(1)} className='cursor-pointer'>
                             · 낮은 가격순
                         </div>

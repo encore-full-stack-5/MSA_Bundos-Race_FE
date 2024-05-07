@@ -1,6 +1,31 @@
+import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import ShoppingMyBox from "./ShoppingMyBox"
 
 const MainNavBar = () => {
+    const [myBox, setMyBox] = useState(false);
+
+    const myBoxToggle = () => {
+        document.addEventListener("click", (e) => {
+            if(e.target.id === "myBoxButton") setMyBox(true);
+            else setMyBox(false);
+        });
+        // document.addEventListener("mouseup", (e) => {
+        //     console.log(e.target);
+        //     if(e.target.id !== "myBoxButton" && e.target.class !== "myBoxCategory") setMyBox(false);
+        // });
+    }
+
+    const MyBoxCategory = () => {
+        return myBox && (
+            <ShoppingMyBox />
+        );
+    }
+
+    useEffect(() => {
+        myBoxToggle();
+    },[]);
+
     return (
         <>
             <div 
@@ -15,13 +40,13 @@ const MainNavBar = () => {
                         style={{paddingLeft:"12vw", paddingRight:"12vw", marginLeft:"1vw", marginRight:"1vw", flex: "0.35"}}
                         className="flex flex-row justify-between items-center border-b border-opacity-30 border-gray-500"
                     >
-                        <Link to={"/1"}>
-                        <div className="font-extrabold">
+                        {/* <Link to={"/1"}> */}
+                        <div className="font-extrabold" onClick={() => {window.open("http://www.naver.com")}}>
                             NAVER
                         </div>
-                        </Link>
+                        {/* </Link> */}
                         <div className="flex flex-row gap-4">
-                            <Link to={"/2"}>
+                            <Link to={"/my/cart"}>
                             <div className="flex flex-row gap-1">
                                 <svg width="19" height="19" viewBox="0 0 19 19" fill="none" class="_gnbHeader_icon_3CZKN"><mask id="IconGradationBasket19x19White_svg__b0qe6nlcCLa" maskUnits="userSpaceOnUse" x="-0.944" y="0.583" width="20" height="19" fill="#000"><path fill="#fff" d="M-.944.583h20v19h-20z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M9.493 1.583a4.004 4.004 0 00-4.004 4.004v.747H2.191c-.731 0-1.272.67-1.105 1.37l2.265 9.502a.97.97 0 00.948.739h10.402a.97.97 0 00.948-.74l2.265-9.501c.167-.7-.373-1.37-1.105-1.37h-3.312v-.747a4.004 4.004 0 00-4.004-4.003zm2.948 4.75v-.746a2.948 2.948 0 10-5.897 0v.747h5.898z"></path></mask><path fill-rule="evenodd" clip-rule="evenodd" d="M9.493 1.583a4.004 4.004 0 00-4.004 4.004v.747H2.191c-.731 0-1.272.67-1.105 1.37l2.265 9.502a.97.97 0 00.948.739h10.402a.97.97 0 00.948-.74l2.265-9.501c.167-.7-.373-1.37-1.105-1.37h-3.312v-.747a4.004 4.004 0 00-4.004-4.003zm2.948 4.75v-.746a2.948 2.948 0 10-5.897 0v.747h5.898z" fill="#fff"></path><path d="M14.382 6.833a.5.5 0 100-1v1zm-.885-1a.5.5 0 100 1v-1zm.885 0h-.885v1h.885v-1zm-8.893.5v1a1 1 0 001-1h-1zm-4.403 1.37l-.973.233.973-.232zm2.265 9.503l.973-.232-.973.232zm12.298 0l.973.232-.973-.232zm2.265-9.502l-.973-.232.973.232zm-4.417-1.37h-1a1 1 0 001 1v-1zm-1.056 0v1a1 1 0 001-1h-1zm-5.897 0h-1a1 1 0 001 1v-1zm-.055-.747a3.004 3.004 0 013.004-3.003v-2a5.004 5.004 0 00-5.004 5.003h2zm0 .747v-.747h-2v.747h2zm-1.43 1h.43v-2h-.43v2zm-2.868 0h2.868v-2H2.19v2zm-.132.138a.096.096 0 01.021-.088c.024-.03.06-.05.11-.05v-2C.837 5.334-.207 6.586.114 7.936l1.946-.464zm2.265 9.502L2.06 7.472l-1.946.464 2.266 9.502 1.945-.464zm-.025-.03h.002l.002.001.006.004a.038.038 0 01.008.009c.003.004.006.01.007.016l-1.945.464a1.97 1.97 0 001.92 1.507v-2zm10.402 0H4.299v2h10.402v-2zm-.025.03a.053.053 0 01.007-.016.038.038 0 01.008-.01.024.024 0 01.006-.003h.003v2a1.97 1.97 0 001.922-1.507l-1.946-.464zm2.265-9.502l-2.265 9.502 1.946.464 2.265-9.502-1.946-.464zm-.132-.138c.051 0 .087.02.111.05a.096.096 0 01.021.088l1.946.464c.322-1.35-.722-2.602-2.078-2.602v2zm-3.312 0h3.312v-2h-3.312v2zm-1-1.747v.747h2v-.747h-2zM9.493 2.584a3.004 3.004 0 013.004 3.003h2A5.004 5.004 0 009.493.583v2zm3.948 3.75v-.747h-2v.747h2zm0-.747A3.948 3.948 0 009.493 1.64v2c1.076 0 1.948.872 1.948 1.948h2zM9.493 1.64a3.948 3.948 0 00-3.949 3.948h2c0-1.076.873-1.948 1.949-1.948v-2zM5.544 5.587v.747h2v-.747h-2zm1 1.747h.146v-2h-.146v2zm.146 0h1.313v-2H6.69v2zm1.313 0h2.944v-2H8.003v2zm2.944 0h1.365v-2h-1.365v2zm1.365 0h.13v-2h-.13v2z" fill="#000" fill-opacity="0.1" mask="url(#IconGradationBasket19x19White_svg__b0qe6nlcCLa)"></path></svg>
                                 <div className="content-center">
@@ -51,19 +76,20 @@ const MainNavBar = () => {
                             </Link>
                             <div className="flex flex-row items-center">
                                 <input style={{minWidth:"260px", height:"32px"}}/>
-                                <Link to={"/2"}>
+                                <Link to={"/search/category/"}>
                                 <svg width="50" height="34" viewBox="0 0 50 34" fill="none" class="_searchInput_icon_DaIWa">
                                     <path fill="#00C73C" stroke="#00A030" d="M.5.5h49v33H.5z"></path><g filter="url(#IconMagnifierBox50x34Green_svg__filter0_d_4_5922)" stroke="#fff" stroke-width="2"><path d="M28 20l6 5"></path><circle cx="23.5" cy="15.5" r="6.5"></circle></g><defs><filter id="IconMagnifierBox50x34Green_svg__filter0_d_4_5922" x="14" y="6" width="22.64" height="21.768" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood><feColorMatrix in="SourceAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix><feOffset></feOffset><feGaussianBlur stdDeviation="1"></feGaussianBlur><feComposite in2="hardAlpha" operator="out"></feComposite><feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0"></feColorMatrix><feBlend in2="BackgroundImageFix" result="effect1_dropShadow_4_5922"></feBlend><feBlend in="SourceGraphic" in2="effect1_dropShadow_4_5922" result="shape"></feBlend></filter></defs>
                                 </svg>
                                 </Link>
-                                <Link to={"/2"}>
+                                <Link to={"/search/category/"}>
                                 <div className="pl-2 text-sm">검색</div>
                                 </Link>
                             </div>
                         </div>
-                        <div className="flex flex-row gap-1">
-                            <div className="cursor-pointer text-sm">쇼핑MY</div>
+                        <div className="flex flex-row gap-1 relative">
+                            <div id="myBoxButton" className="cursor-pointer text-sm">쇼핑MY</div>
                             <div style={{fontSize:"5pt"}}>▼</div>
+                            <MyBoxCategory />
                         </div>
                     </div>
                 </div>

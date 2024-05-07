@@ -4,6 +4,7 @@ import ReviewPopupBox from '../components/ReviewPopupBox'
 import ReviewFullBox from '../components/ReviewFullBox'
 import TopButton from '../components/TopButton';
 import { useEffect, useState } from 'react';
+// import axios from "axios";
 
 const ProductDetail = () => {
     const testImageArr = ["", "", "", ""];
@@ -93,6 +94,23 @@ const ProductDetail = () => {
             options:["크기선택:왕특(18mm 이상)", "중량선택:1kg(250g4팩)"]
         },
     ];
+    // const testData = {
+        
+    // }
+
+    // const [data, setData] = useState(testData);
+    // const getData = async () => {
+    //     try{
+    //         const response = await axios.get(
+    //             "http://"
+    //         );
+    //         console.log(response.data[0]);
+    //         setData(response.data[0]);
+    //     } catch(error) {
+    //         alert("상품 정보를 불러오는데 오류가 발생했습니다.")
+    //     }
+    // }
+
 
     const [ReviewOrder, setReviewOrder] = useState("0");
     const [ReviewPopup, setReviewPopup] = useState("0");
