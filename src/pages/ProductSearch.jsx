@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link } from "react-router-dom"
-// import SearchBrandFilterItem from '../atom/SearchBrandFilterItem'
 import SearchProductItem from '../components/SearchProductItem'
 import TopButton from '../components/TopButton'
+import axios from "axios";
+import { useRecoilValue } from 'recoil';
+import { address } from '../store/address';
 
 const ProductSearch = () => {
     const testBrandArr = ["오뚜기", "CJ", "청정원", "풀무원", "농심", "동원"];
@@ -117,7 +119,6 @@ const ProductSearch = () => {
                         <div style={{fontSize:"10pt"}} className="flex gap-6 pl-5 text-gray-700 text-sm">
                             {testBrandArr.map((brand, i) => (
                                 <div id={"brand"+i} onClick={() => changeBrandFilter(i)} className='cursor-pointer'>
-                                    {/* <SearchBrandFilterItem link="/home" displayName={brand}/> */}
                                     {brand}
                                 </div>
                             ))}

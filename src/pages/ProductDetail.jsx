@@ -104,11 +104,11 @@ const ProductDetail = () => {
         }
     }
     const [data, setData] = useState(testData);
-    const address = useRecoilValue(address);
+    const link = useRecoilValue(address);
     const getData = async () => {
         try{
             const response = await axios.get(
-                "http://" + address + "/products"
+                "http://" + link + "/products"
             );
             console.log(response.data[0]);
             setData(response.data[0]);
