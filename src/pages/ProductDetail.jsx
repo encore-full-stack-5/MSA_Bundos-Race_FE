@@ -208,7 +208,7 @@ const ProductDetail = () => {
                                         </div>
                                         <div className="mt-4 mb-4 flex flex-row justify-between items-center">
                                             <div className="text-red-600 text-3xl">
-                                                {data.discountRate > 0 ? 100 - data.discountRate + "%" : ""}
+                                                {data.discountRate > 0 ? data.discountRate + "%" : ""}
                                             </div>
                                             <div className="flex flex-row items-center font-bold">
                                                 <div className="text-1xl text-gray-400 line-through decoration-2 pr-3">
