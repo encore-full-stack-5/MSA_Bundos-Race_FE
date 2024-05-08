@@ -8,7 +8,7 @@ const ProductOptionGroup = (props) => {
         >
             <option value={""} hidden>{props.name}</option>
             {props.options.map((e) => (
-                <ProductOptionItem group={props.id} id={e.id} name={e.name} price={e.price} qty={e.qty}/>
+                <ProductOptionItem group={props.id} id={e.id} name={props.name + ": " + e.name} price={e.price} qty={e.amount}/>
             ))}
         </select>
     )

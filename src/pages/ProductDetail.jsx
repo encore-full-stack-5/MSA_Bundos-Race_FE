@@ -4,62 +4,11 @@ import ReviewPopupBox from '../components/ReviewPopupBox'
 import ReviewFullBox from '../components/ReviewFullBox'
 import TopButton from '../components/TopButton';
 import { useEffect, useState } from 'react';
-// import axios from "axios";
+import axios from "axios";
+import { useRecoilValue } from 'recoil';
+import { address } from '../store/address';
 
 const ProductDetail = () => {
-    const testImageArr = ["", "", "", ""];
-    const testOptionArr = [
-        {
-            id: 1,
-            name: "크기선택",
-            require: true,
-            options: [
-                {
-                    id: 1,
-                    name: "대과(14mm 이하)",
-                    price: 0,
-                    qty: 100
-                },
-                {
-                    id: 2,
-                    name: "특대(15mm 이상)",
-                    price: 0,
-                    qty: 100
-                },
-                {
-                    id: 3,
-                    name: "왕특(18mm 이상)",
-                    price: 0,
-                    qty: 100
-                },
-            ],
-        },
-        {
-            id: 2,
-            name: "중량선택",
-            require: true,
-            options: [
-                {
-                    id: 1,
-                    name: "250g",
-                    price: 0,
-                    qty: 100
-                },
-                {
-                    id: 2,
-                    name: "500g(250g2팩)",
-                    price: 12500,
-                    qty: 1
-                },
-                {
-                    id: 3,
-                    name: "1kg(250g4팩)",
-                    price: 29500,
-                    qty: 0
-                },
-            ],
-        },
-    ];
     const testReviewArr = [
         {
             id:1,
@@ -94,22 +43,79 @@ const ProductDetail = () => {
             options:["크기선택:왕특(18mm 이상)", "중량선택:1kg(250g4팩)"]
         },
     ];
-    // const testData = {
-        
-    // }
-
-    // const [data, setData] = useState(testData);
-    // const getData = async () => {
-    //     try{
-    //         const response = await axios.get(
-    //             "http://"
-    //         );
-    //         console.log(response.data[0]);
-    //         setData(response.data[0]);
-    //     } catch(error) {
-    //         alert("상품 정보를 불러오는데 오류가 발생했습니다.")
-    //     }
-    // }
+    const testData = {
+        id: 1,
+        name: "test",
+        description: "테스트 상품 설명",
+        images: [
+            "image1.jpg",
+            "image2.jpg"
+        ],
+        price: 10000,
+        discountRate: 10,
+        deliveryPrice: 3000,
+        optionGroups: [
+            {
+                id: 1,
+                necessary: true,
+                name: "옵션 그룹 1",
+                options: [
+                    {
+                        id: 1,
+                        name: "옵션 1",
+                        price: 500,
+                        amount: 50
+                    },
+                    {
+                        id: 2,
+                        name: "옵션 2",
+                        price: 1500,
+                        amount: 100
+                    }
+                ]
+            },
+            {
+                id: 2,
+                necessary: true,
+                name: "옵션 그룹 2",
+                options: [
+                    {
+                        id: 3,
+                        name: "옵션 3",
+                        price: 2500,
+                        amount: 200
+                    }
+                ]
+            }
+        ],
+        amount: 1000,
+        createdAt: "2024-05-08T09:17:52.154607",
+        status: 1,
+        sellCount: 0,
+        seller: {
+            id: 1,
+            name: "Seller 1",
+            uid: null,
+            createdAt: "2024-05-07T09:17:41.896479"
+        },
+        category: {
+            id: 1,
+            name: "여성패션"
+        }
+    }
+    const [data, setData] = useState(testData);
+    const address = useRecoilValue(address);
+    const getData = async () => {
+        try{
+            const response = await axios.get(
+                "http://" + address + "/products"
+            );
+            console.log(response.data[0]);
+            setData(response.data[0]);
+        } catch(error) {
+            alert("상품 정보를 불러오는데 오류가 발생했습니다.")
+        }
+    }
 
 
     const [ReviewOrder, setReviewOrder] = useState("0");
@@ -178,12 +184,12 @@ const ProductDetail = () => {
                             <div className="border border-gray-300 mt-5 mb-5 flex flex-row">
                                 <div className="flex flex-col justify-start flex-1 border-r border-gray-300">
                                     <img 
-                                        src=""
+                                        src={data.images[0]}
                                         alt=""
                                         className="w-full aspect-square"
                                     />
                                     <div className="flex flex-row gap-0.5 justify-center mt-4 mb-10">
-                                        {testImageArr.map((e, i) => (
+                                        {data.images.map((e, i) => (
                                             <div id={"thumbnail"+i} onClick={() => {}} className='cursor-pointer'>
                                                 <img 
                                                     src={e}
@@ -198,26 +204,26 @@ const ProductDetail = () => {
                                 <div className="flex flex-col justify-start flex-1">
                                     <div className="p-6">
                                         <div className="font-bold text-lg">
-                                            {"상품이름"}
+                                            {data.name}
                                         </div>
                                         <div className="mt-4 mb-4 flex flex-row justify-between items-center">
                                             <div className="text-red-600 text-3xl">
-                                                {"85%"}
+                                                {data.discountRate > 0 ? 100 - data.discountRate + "%" : ""}
                                             </div>
                                             <div className="flex flex-row items-center font-bold">
                                                 <div className="text-1xl text-gray-400 line-through decoration-2 pr-3">
-                                                    {"10000원"}
+                                                    {data.discountRate > 0 ? data.price + "원" : ""}
                                                 </div>
                                                 <div className="text-2xl">
-                                                    {"10000원"}
+                                                    {data.discountRate > 0 ? data.price * (100-data.discountRate)/100 + "원" : data.price + "원"}
                                                 </div>
                                             </div>
                                         </div>
                                         <hr />
                                         <form>
                                         <div className='flex flex-col my-5 gap-2'>
-                                            {testOptionArr.map((e, i) => (
-                                                <ProductOptionGroup name={e.name} options={e.options} require={e.require}/>
+                                            {data.optionGroups.map((e, i) => (
+                                                <ProductOptionGroup id={e.id} name={e.name} options={e.options} require={e.necessary}/>
                                             ))}
                                         </div>
                                         <hr />
@@ -285,7 +291,7 @@ const ProductDetail = () => {
                         <div id="viewDetail" className='font-bold my-3 pt-4 text-xl'>
                             상품 상세
                         </div>
-                        <div className='bg-gray-100' style={{height:"800px"}}/>
+                        <div className='bg-gray-100' style={{height:"800px"}}>{data.description}</div>
 
                         <div id="viewReview" className='flex flex-row justify-between my-3 pt-4'>
                             <div className='font-bold text-xl'>
