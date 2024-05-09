@@ -13,9 +13,8 @@ const Login = (props) => {
         console.log(searchParams.get("token"));
         
         const response = await axios.get("http://localhost:9009/api/v1/auth?token=" + searchParams.get("token"));
-        console.log(response.data);
 
-        localStorage.setItem("uuid", response.data);
+        localStorage.setItem("uuid", response.data.token);
         navigate(searchParams.get("redirect"),{replace:true});
         window.location.reload();
     }
