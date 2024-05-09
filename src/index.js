@@ -12,13 +12,16 @@ import Test2 from './pages/test2';
 import MyCart from './pages/MyCart';
 import MyOrder from './pages/MyOrder';
 import MyReview from './pages/MyReview';
+import Login from './pages/Login';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App/>,
     children: [
+      { path: "/", element: <Home/> },
       { path: "/home", element: <Home/> },
+      { path: "/login", element: <Login/> },
       { path: "/search/category/*", element: <ProductSearch/> },
       { path: "/products/*", element: <ProductDetail/> },
       { path: "/my/cart", element: <MyCart/> },

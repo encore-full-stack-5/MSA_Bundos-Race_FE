@@ -10,21 +10,49 @@ const MainNavBar = () => {
             if(e.target.id === "myBoxButton") setMyBox(true);
             else setMyBox(false);
         });
-        // document.addEventListener("mouseup", (e) => {
-        //     console.log(e.target);
-        //     if(e.target.id !== "myBoxButton" && e.target.class !== "myBoxCategory") setMyBox(false);
-        // });
     }
-
     const MyBoxCategory = () => {
         return myBox && (
             <ShoppingMyBox />
         );
     }
+    // const SignBox = () => {
+    //     return localStorage.getItem("uuid") ?
+    //     (
+    //         <div
+    //             style={{backgroundColor:"rgba(255, 255, 255, 0.05)", fontSize:"9pt"}}
+    //             className="p-0.5 pl-1 pr-1 border border-opacity-60 border-gray-500 font-normal cursor-pointer"
+    //             onClick={logout}>
+    //             로그아웃
+    //         </div>
+    //     ):(
+    //         <div
+    //             style={{backgroundColor:"rgba(255, 255, 255, 0.05)", fontSize:"9pt"}}
+    //             className="p-0.5 pl-1 pr-1 border border-opacity-60 border-gray-500 font-normal cursor-pointer"
+    //             onClick={login}>
+    //             로그인
+    //         </div>
+    //     )
+    // }
+
+    const login = () => {
+        window.location.href = 
+            "http://192.168.0.12:5173/signin?redirect="
+            + window.location.origin
+            + "/login?redirect="
+            + window.location.pathname;
+    }
+    const logout = () => {
+        localStorage.removeItem("uuid");
+        alert("로그아웃 되었습니다.");
+        window.location.reload();
+    }
+
 
     useEffect(() => {
         myBoxToggle();
     },[]);
+
 
     return (
         <>
@@ -54,13 +82,13 @@ const MainNavBar = () => {
                                 </div>
                             </div>
                             </Link>
-                            <Link to={"/2"}>
+                            {/* <SignBox /> */}
                             <div
                                 style={{backgroundColor:"rgba(255, 255, 255, 0.05)", fontSize:"9pt"}}
-                                className="p-0.5 pl-1 pr-1 border border-opacity-60 border-gray-500 font-normal">
-                                로그인
+                                className="p-0.5 pl-1 pr-1 border border-opacity-60 border-gray-500 font-normal cursor-pointer"
+                                onClick={localStorage.getItem("uuid") ? logout : login}>
+                                {localStorage.getItem("uuid") ? "로그아웃" : "로그인"}
                             </div>
-                            </Link>
                         </div>
                     </div>
 
