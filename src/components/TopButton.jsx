@@ -13,6 +13,7 @@ const TopButton = (props) => {
     return (
         <div id="topButton"
             className="fixed right-5 bottom-5 w-11 h-11 border border-stone-300 cursor-pointer flex items-center justify-center"
+            style={{right:props.right||"20px", bottom:props.bottom||"20px"}}
             onClick={gotoTop}
         >
             <div style={{

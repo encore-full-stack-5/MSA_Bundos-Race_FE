@@ -7,13 +7,13 @@ const MyCartProduct = (props) => {
         <div className="mb-5 rounded-2xl bg-white">
             <div className="flex flex-col p-6 px-7">
                 <div className="flex flex-row pb-4 border-b-2 border-black items-center justify-between">
-                    <div className="flex flex-row gap-3 cursor-pointer items-center justify-between">
-                        <CheckBox check={true}/>
+                    <div onClick={props.changeCheck} className="flex flex-row gap-3 cursor-pointer items-center justify-between">
+                        <CheckBox check={props.checked}/>
                         <div className="font-bold text-lg">
                             {props.seller}
                         </div>
                     </div>
-                    <div className="w-8 h-6 cursor-pointer flex items-center justify-center">
+                    <div onClick={props.deleteCart} className="w-8 h-6 cursor-pointer flex items-center justify-center">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="ico_delete--2NfiVYXLHf"><path d="M13 2.5l.707.707-4.646 4.647 4.646 4.646-.707.707-4.646-4.646-4.647 4.646L3 12.5l4.647-4.646L3 3.207l.707-.707 4.647 4.647L13 2.5z" fill="#BDC0C6"></path></svg>
                     </div>
                 </div>
@@ -41,8 +41,8 @@ const MyCartProduct = (props) => {
                     <div className="flex flex-col px-6 justify-center text-sm border-r border-gray-200" style={{maxWidth:"22svw", minWidth:"16svw"}}>
                         {props.options.map((e,i) => (
                             <div>
-                                {e.optionName}
-                                {e.optionPrice == 0 ? "" : " (+" + e.optionPrice + "원)"}
+                                {e.optionGroupName + ": " + e.optionName}
+                                {e.optionPrice === 0 ? "" : " (+" + e.optionPrice + "원)"}
                             </div>
                         ))}
                     </div>
@@ -59,7 +59,7 @@ const MyCartProduct = (props) => {
                             배송비  
                         </div>
                         <div className="font-bold">
-                            {props.delivery == 0 ? "무료" : props.delivery+"원"}
+                            {props.delivery === 0 ? "무료" : props.delivery+"원"}
                         </div>
                     </div>
                 </div>
@@ -78,7 +78,7 @@ const MyCartProduct = (props) => {
                             총 배송비
                         </div>
                         <div>
-                            {props.delivery == 0 ? "무료" : props.delivery+"원"}
+                            {props.delivery === 0 ? "무료" : props.delivery+"원"}
                         </div>
                     </div>
                     <div className="font-bold text-3xl text-gray-300 px-4">-</div>
@@ -97,7 +97,7 @@ const MyCartProduct = (props) => {
                             {props.price * (1-(props.discount/100)) + props.delivery +"원"}
                         </span>
                     </div>
-                    <div className="rounded-lg text-white px-8 py-3 font-bold cursor-pointer" style={{backgroundColor:"#00c63a"}}>
+                    <div onClick={props.addOrder} className="rounded-lg text-white px-8 py-3 font-bold cursor-pointer" style={{backgroundColor:"#00c63a"}}>
                         주문하기
                     </div>
                 </div>
