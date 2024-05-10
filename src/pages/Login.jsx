@@ -1,21 +1,19 @@
 import axios from "axios";
 import { useEffect } from "react"
 import { useNavigate, useSearchParams  } from "react-router-dom"
+import { useRecoilValue } from 'recoil';
+import { address } from '../store/address';
 
 const Login = (props) => {
     const [searchParams] = useSearchParams();
+    const link = useRecoilValue(address);
     const navigate = useNavigate(); 
 
     const parseLogin = async () => {
-        console.log(searchParams.toString());
-        console.log();
-        console.log(searchParams.get("redirect"));
-        console.log(searchParams.get("token"));
-        
-        const response = await axios.get("http://localhost:9009/api/v1/auth?token=" + searchParams.get("token"));
+        const response = await axios.get(link+"/auth?token=" + searchParams.get("token"));
 
         localStorage.setItem("uuid", response.data.token);
-        navigate(searchParams.get("redirect"),{replace:true});
+        navigate(searchParams.get("redirect"));
         window.location.reload();
     }
 

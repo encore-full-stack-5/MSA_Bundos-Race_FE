@@ -4,6 +4,7 @@ import ReviewPopupBox from '../components/ReviewPopupBox'
 import ReviewFullBox from '../components/ReviewFullBox'
 import TopButton from '../components/TopButton';
 import { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams  } from "react-router-dom"
 import axios from "axios";
 import { useRecoilValue } from 'recoil';
 import { address } from '../store/address';
@@ -103,8 +104,13 @@ const ProductDetail = () => {
             name: "여성패션"
         }
     }
+
+
+    const [ReviewOrder, setReviewOrder] = useState("0");
+    const [ReviewPopup, setReviewPopup] = useState("0");
     const [data, setData] = useState(testData);
     const link = useRecoilValue(address);
+    const navigate = useNavigate(); 
     const getData = async () => {
         try{
             const response = await axios.get(
@@ -117,9 +123,6 @@ const ProductDetail = () => {
         }
     }
 
-
-    const [ReviewOrder, setReviewOrder] = useState("0");
-    const [ReviewPopup, setReviewPopup] = useState("0");
 
     const ChangeReivewOrder = (n) => {
         const beforeElement = document.getElementById("reviewOrder"+ReviewOrder);
@@ -167,13 +170,31 @@ const ProductDetail = () => {
         return "";
     }
 
-    // const observer = new IntersectionObserver(()=>{}, {root: document.getElementById("upperBox")});
-    // observer.observe()
+    const submitProduct = () => {
+        if (decodeURI(searchParams.get("cart")) === "장바구니") {
+            //
+            navigate(window.location.pathname);
+        } else if (decodeURI(searchParams.get("cart")) === "구매하기") {
+            //
+            navigate(window.location.pathname);
+        }
+    }
+    const submitCheckLogin = (e) => {
+        if (!localStorage.getItem("UUID")) {
+            e.preventDefault();
+            alert("로그인이 필요한 서비스입니다.");
+        }
+    }
+
+    const [searchParams] = useSearchParams();
 
     useEffect(() => {
-        ChangeReivewOrder(0);   
+        ChangeReivewOrder(0);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
+    useEffect(() => {
+        if(searchParams != "") submitProduct(); 
+    },[searchParams])
 
     return (
         <>
@@ -220,31 +241,31 @@ const ProductDetail = () => {
                                             </div>
                                         </div>
                                         <hr />
-                                        <form>
-                                        <div className='flex flex-col my-5 gap-2'>
-                                            {data.optionGroups.map((e, i) => (
-                                                <ProductOptionGroup id={e.id} name={e.name} options={e.options} require={e.necessary}/>
-                                            ))}
-                                        </div>
-                                        <hr />
-                                        <div className='flex flex-row items-center my-5 justify-between'>
-                                            <div className='text-sm font-bold'>총 상품 금액</div>
-                                            <div className="text-red-600 text-2xl font-bold">
-                                                {"0원"}
+                                        <form id="testForm" onSubmit={e => submitCheckLogin(e)}>
+                                            <div className='flex flex-col my-5 gap-2'>
+                                                {data.optionGroups.map((e, i) => (
+                                                    <ProductOptionGroup id={e.id} name={e.name} options={e.options} require={e.necessary}/>
+                                                ))}
                                             </div>
-                                        </div>
-                                        <div className='flex flex-row gap-2'>
-                                            <input type='submit' 
-                                                className='flex-1 rounded-e rounded-s border border-gray-400 text-center py-2 cursor-pointer' 
-                                                style={{fontSize:"11pt", fontWeight:"600"}}
-                                                value={"장바구니"}>
-                                            </input>
-                                            <input type='submit' 
-                                                className='flex-1 rounded-e rounded-s border border-gray-400 text-center py-2 cursor-pointer' 
-                                                style={{fontSize:"11pt", fontWeight:"600", backgroundColor:"#25ce63", borderColor:"#25ce63"}}
-                                                value={"구매하기"}>
-                                            </input>
-                                        </div>
+                                            <hr />
+                                            <div className='flex flex-row items-center my-5 justify-between'>
+                                                <div className='text-sm font-bold'>총 상품 금액</div>
+                                                <div className="text-red-600 text-2xl font-bold">
+                                                    {"0원"}
+                                                </div>
+                                            </div>
+                                            <div className='flex flex-row gap-2'>
+                                                <input type='submit' name="cart"
+                                                    className='flex-1 rounded-e rounded-s border border-gray-400 text-center py-2 cursor-pointer' 
+                                                    style={{fontSize:"11pt", fontWeight:"600"}}
+                                                    value={"장바구니"}>
+                                                </input>
+                                                <input type='submit' name="buy"
+                                                    className='flex-1 rounded-e rounded-s border border-gray-400 text-center py-2 cursor-pointer' 
+                                                    style={{fontSize:"11pt", fontWeight:"600", backgroundColor:"#25ce63", borderColor:"#25ce63"}}
+                                                    value={"구매하기"}>
+                                                </input>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
