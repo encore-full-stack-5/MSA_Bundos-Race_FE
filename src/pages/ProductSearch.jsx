@@ -5,73 +5,30 @@ import TopButton from '../components/TopButton'
 import axios from "axios";
 import { useRecoilValue } from 'recoil';
 import { address } from '../store/address';
+import { useSearchParams  } from "react-router-dom"
 
 const ProductSearch = () => {
     const testBrandArr = ["오뚜기", "CJ", "청정원", "풀무원", "농심", "동원"];
-    const testProductArr = [
-        {
-            id: 1,
-            img: "",
-            link: "/products",
-            name: "분도의 황도캔",
-            price: 3800,
-            delivery: 0,
-            seller: "박무릉도원",
-            reviewCount: "0",
-            sellCount: "1234",
-            createdAt: "1998. 2."
-        },
-        {
-            id: 2,
-            img: "",
-            link: "/products",
-            name: "부릉부릉 미니카",
-            price: 17500,
-            delivery: 3000,
-            seller: "박부릉도",
-            reviewCount: "999",
-            sellCount: "1",
-            createdAt: "2024. 1."
-        },
-        {
-            id: 3,
-            img: "",
-            link: "/products",
-            name: "애쁠와치",
-            price: 50,
-            delivery: 0,
-            seller: "수상한사람",
-            reviewCount: "1",
-            sellCount: "1",
-            createdAt: "2024. 4."
-        },
-        {
-            id: 4,
-            img: "",
-            link: "/products",
-            name: "이름이긴상품이필요한데제가직접한번팔아보겠습니다",
-            price: 180000050,
-            delivery: 1000,
-            seller: "판매자이름이길어봐야거기서거기지",
-            reviewCount: "9999",
-            sellCount: "10000",
-            createdAt: "2022. 11."
-        },
-        {
-            id: 5,
-            img: "",
-            link: "/products",
-            name: "알유앀진석",
-            price: 10,
-            delivery: 0,
-            seller: "큰형님",
-            reviewCount: "0",
-            sellCount: "0",
-            createdAt: "2024. 5."
-        },
-    ];
-    const [orderBy, setOrder] = useState(1);
+
     const [brandFilter, setBrandFilter] = useState(null);
+    const [orderBy, setOrder] = useState(1);
+    const [data, setData] = useState({});
+    const [searchParams] = useSearchParams();
+    const link = useRecoilValue(address);
+
+    const getData = async () => {
+        try {
+            const params = {categoryId:searchParams.get("id")};
+            const response = await axios.get(
+                link + "/products?page=1&size=10&sortBy=price&direction=DESC&categoryId=" + searchParams.get("id"),
+                {params}
+            );
+            console.log(response.data);
+            setData(response.data);
+        } catch(error) {
+            alert("상품 정보를 불러오는데 오류가 발생했습니다.")
+        }
+    }
 
     const changeOrder = (n) => {
         const beforeOrder = document.getElementById("order"+orderBy);
@@ -80,7 +37,6 @@ const ProductSearch = () => {
         const afterOrder = document.getElementById("order"+n);
         afterOrder.style.color = "black"
     }
-
     const changeBrandFilter = (n) => {
         if (brandFilter != null){
             const beforeBrand = document.getElementById("brand"+brandFilter);
@@ -98,6 +54,7 @@ const ProductSearch = () => {
     }
 
     useEffect(() => {
+        getData();
         changeOrder(1);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
@@ -169,18 +126,18 @@ const ProductSearch = () => {
                     </div>
                     <hr />
                     <div className="flex flex-col">
-                        {testProductArr.map((e, i) => (
+                        {data.content?.map((e, i) => (
                             <div key={i}>
                                 <SearchProductItem 
-                                    img={e.img}
-                                    link={e.link + "/" + e.id}
-                                    name={e.name}
+                                    img={e.image}
+                                    link={"/products?id=" + e.productId}
+                                    name={e.productName}
                                     price={e.price}
-                                    delivery={e.delivery}
-                                    seller={e.seller}
-                                    reviewCount={e.reviewCount}
-                                    sellCount={e.sellCount}
-                                    createdAt={e.createdAt}
+                                    delivery={e.deliveryPrice}
+                                    seller={e.sellerName}
+                                    // reviewCount={e.reviewCount}
+                                    // sellCount={e.sellCount}
+                                    createdAt={e.createdAt?.substr(0,7)}
                                 />
                             </div>
                         ))}

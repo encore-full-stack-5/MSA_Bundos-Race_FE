@@ -3,6 +3,18 @@ import CheckBox from "../atom/CheckBox"
 
 
 const MyCartProduct = (props) => {
+    const SumPrice = () => {
+        let sum = props.price;
+        props.options.forEach(e => sum += e.optionPrice);
+        return sum + "원";
+    }
+    const TotalPrice = () => {
+        let sum = props.price + props.delivery;
+        sum -= props.price * (props.discount/100);
+        props.options.forEach(e => sum += e.optionPrice);
+        return sum + "원";
+    }
+
     return (
         <div className="mb-5 rounded-2xl bg-white">
             <div className="flex flex-col p-6 px-7">
@@ -18,7 +30,7 @@ const MyCartProduct = (props) => {
                     </div>
                 </div>
                 <div className="flex flex-row border-b border-gray-400">
-                    <Link to={"/products/"+props.productId}>
+                    <Link to={"/products?id="+props.productId}>
                         <div className="flex flex-row py-6 pr-6 border-r border-gray-200" style={{minWidth:"20svw"}}>
                             <img 
                                 src={props.img}
@@ -39,12 +51,18 @@ const MyCartProduct = (props) => {
                         </div>
                     </Link>
                     <div className="flex flex-col px-6 justify-center text-sm border-r border-gray-200" style={{maxWidth:"22svw", minWidth:"16svw"}}>
-                        {props.options.map((e,i) => (
-                            <div>
-                                {e.optionGroupName + ": " + e.optionName}
-                                {e.optionPrice === 0 ? "" : " (+" + e.optionPrice + "원)"}
+                        {props.options.length === 0 ?
+                            <div className="text-center text-gray-300">
+                                선택옵션이 없습니다.
                             </div>
-                        ))}
+                             : 
+                             props.options.map((e,i) => (
+                                <div>
+                                    {e.optionGroupName + ": " + e.optionName}
+                                    {e.optionPrice === 0 ? "" : " (+" + e.optionPrice + "원)"}
+                                </div>
+                            ))
+                            }
                     </div>
                     <div className="flex-1 flex flex-col items-center justify-center border-r border-gray-200">
                         <div className="text-sm">
@@ -68,9 +86,7 @@ const MyCartProduct = (props) => {
                         <div>
                             선택상품금액
                         </div>
-                        <div>
-                            {props.price+"원"}
-                        </div>
+                        <SumPrice />
                     </div>
                     <div className="font-bold text-3xl text-gray-300 px-4">+</div>
                     <div className="font-bold">
@@ -94,7 +110,8 @@ const MyCartProduct = (props) => {
                     <div className="font-bold pr-12">
                         주문금액
                         <span className="font-extrabold pl-2" style={{color:"#00c63a"}}>
-                            {props.price * (1-(props.discount/100)) + props.delivery +"원"}
+                            <TotalPrice />
+                            {/* {props.price * (1-(props.discount/100)) + props.delivery +"원"} */}
                         </span>
                     </div>
                     <div onClick={props.addOrder} className="rounded-lg text-white px-8 py-3 font-bold cursor-pointer" style={{backgroundColor:"#00c63a"}}>

@@ -9,7 +9,7 @@ import axios from "axios";
 import { useRecoilValue } from 'recoil';
 import { address } from '../store/address';
 
-const ProductDetail = () => {
+const ProductDetail = (req, res) => {
     const testReviewArr = [
         {
             id:1,
@@ -108,18 +108,18 @@ const ProductDetail = () => {
 
     const [ReviewOrder, setReviewOrder] = useState("0");
     const [ReviewPopup, setReviewPopup] = useState("0");
-    const [data, setData] = useState(testData);
+    const [data, setData] = useState();
     const link = useRecoilValue(address);
     const navigate = useNavigate(); 
     const getData = async () => {
         try{
             const response = await axios.get(
-                "http://" + link + "/products"
+                link + "/products/" + searchParams.get("id")
             );
-            console.log(response.data[0]);
-            setData(response.data[0]);
+            console.log(response.data);
+            setData(response.data);
         } catch(error) {
-            alert("상품 정보를 불러오는데 오류가 발생했습니다.")
+            alert("상품 정보를 불러오는 중에 오류가 발생했습니다.")
         }
     }
 
@@ -170,37 +170,75 @@ const ProductDetail = () => {
         return "";
     }
 
-    const submitProduct = () => {
-        if (decodeURI(searchParams.get("cart")) === "장바구니") {
+    const submitProduct = async () => {
+        /*if (decodeURI(searchParams.get("action")) === "장바구니") {
+            try{
+                const postOptions = [];
+                searchParams.getAll("options").forEach(e => {
+                    const str = e.split("_");
+                    const option = {
+                        optionGroupId: data.optionGroups[str[0]].id,
+                        optionGroupName: data.optionGroups[str[0]].name,
+                        optionId: data.optionGroups[str[0]].options[str[1]].id,
+                        optionName: data.optionGroups[str[0]].options[str[1]].name,
+                        optionPrice: data.optionGroups[str[0]].options[str[1]].price,
+                    }
+                    postOptions.push(option);
+                });
+                const response = await axios.post(
+                    link + "/carts?token=" + localStorage.getItem("uuid"),
+                    {
+                        productId: data.id,
+                        productImage: data.images[0],
+                        productName: data.name,
+                        productPrice: data.price,
+                        productDiscount: data.discountRate,
+                        productQty: 1,
+                        productSeller: data.seller.name,
+                        productDelivery: data.deliveryPrice,
+                        cartOption: [...postOptions],
+                    }
+                );
+                console.log(response.data[0]);
+            } catch(error) {
+                alert("상품을 장바구니에 담는 중에 오류가 발생했습니다.")
+            }
+            navigate(window.location.pathname + "?id=" + data.id);
+        } else if (decodeURI(searchParams.get("action")) === "구매하기") {
             //
-            navigate(window.location.pathname);
-        } else if (decodeURI(searchParams.get("cart")) === "구매하기") {
-            //
-            navigate(window.location.pathname);
-        }
+            // navigate(window.location.pathname + "?id=" + data.id);
+            const id = data.id
+            navigate("." + "?id=" + id);
+        }*/
     }
+
     const submitCheckLogin = (e) => {
-        if (!localStorage.getItem("UUID")) {
-            e.preventDefault();
-            alert("로그인이 필요한 서비스입니다.");
-        }
+        
+        e.preventDefault();
+        // if (!localStorage.getItem("uuid")) {
+        //     e.preventDefault();
+        //     alert("로그인이 필요한 서비스입니다.");
+        // }
     }
 
     const [searchParams] = useSearchParams();
-
+    // useEffect(() => {
+    //     if(searchParams.get("action") === null) 
+    //         getData();
+    //     else 
+    //         submitProduct(); 
+    // },[])
     useEffect(() => {
-        ChangeReivewOrder(0);
+        getData();
+        // ChangeReivewOrder(0);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
-    useEffect(() => {
-        if(searchParams != "") submitProduct(); 
-    },[searchParams])
 
     return (
         <>
             <div style={{ paddingLeft:"13vw", paddingRight:"13vw"}} className='flex flex-col items-center pb-10'>
                 <div style={{maxWidth:"900px"}} className='w-full'>
-                    <div className='flex flex-col'>
+                    {data == null ? "" : <div className='flex flex-col'>
                         <div id="upperBox">
                             <div className="border border-gray-300 mt-5 mb-5 flex flex-row">
                                 <div className="flex flex-col justify-start flex-1 border-r border-gray-300">
@@ -241,10 +279,10 @@ const ProductDetail = () => {
                                             </div>
                                         </div>
                                         <hr />
-                                        <form id="testForm" onSubmit={e => submitCheckLogin(e)}>
+                                        <form onSubmit={e => submitCheckLogin(e)} method='get'>
                                             <div className='flex flex-col my-5 gap-2'>
                                                 {data.optionGroups.map((e, i) => (
-                                                    <ProductOptionGroup id={e.id} name={e.name} options={e.options} require={e.necessary}/>
+                                                    <ProductOptionGroup id={i} name={e.name} options={e.options} require={e.necessary}/>
                                                 ))}
                                             </div>
                                             <hr />
@@ -255,12 +293,12 @@ const ProductDetail = () => {
                                                 </div>
                                             </div>
                                             <div className='flex flex-row gap-2'>
-                                                <input type='submit' name="cart"
+                                                <input type='submit' name="action"
                                                     className='flex-1 rounded-e rounded-s border border-gray-400 text-center py-2 cursor-pointer' 
                                                     style={{fontSize:"11pt", fontWeight:"600"}}
                                                     value={"장바구니"}>
                                                 </input>
-                                                <input type='submit' name="buy"
+                                                <input type='submit' name="action"
                                                     className='flex-1 rounded-e rounded-s border border-gray-400 text-center py-2 cursor-pointer' 
                                                     style={{fontSize:"11pt", fontWeight:"600", backgroundColor:"#25ce63", borderColor:"#25ce63"}}
                                                     value={"구매하기"}>
@@ -365,7 +403,7 @@ const ProductDetail = () => {
                                 <SetReviewFullComponent review={e}/>
                             ))}
                         </div>
-                    </div>
+                    </div>}
                 </div>
             </div>
 
