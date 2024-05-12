@@ -12,18 +12,46 @@ const ProductSearch = () => {
 
     const [brandFilter, setBrandFilter] = useState(null);
     const [orderBy, setOrder] = useState(1);
+    const [page, setPage] = useState(1);
     const [data, setData] = useState({});
     const [searchParams] = useSearchParams();
     const link = useRecoilValue(address);
 
     const getData = async () => {
         try {
-            const params = {categoryId:searchParams.get("id")};
+            const params = {
+                categoryId:searchParams.get("id")
+            };
+            if (document.getElementById("minPrice").value != "") params.startPrice = document.getElementById("minPrice").value; 
+            if (document.getElementById("maxPrice").value != "") params.endPrice = document.getElementById("maxPrice").value; 
+            switch(orderBy) {
+                case 1:
+                    params.sortBy = "price";
+                    params.direction = "ASC";
+                    break;
+                case 2:
+                    params.sortBy = "price";
+                    params.direction = "DESC";
+                    break;
+                case 3:
+                    params.sortBy = "reviewCount";
+                    params.direction = "DESC";
+                    break;
+                case 5:
+                    params.sortBy = "createdAt";
+                    params.direction = "DESC";
+                    break;
+                default:
+                    alert("이게 이럴리가 없는데")
+            }
+            // params.page = 1;
+            // params.size = 1;
             const response = await axios.get(
-                link + "/products?page=1&size=10&sortBy=price&direction=DESC&categoryId=" + searchParams.get("id"),
-                {params}
+                link + "/products",
+                {params:params}
             );
             console.log(response.data);
+            console.log(response.data.pageable.sort[0]);
             setData(response.data);
         } catch(error) {
             alert("상품 정보를 불러오는데 오류가 발생했습니다.")
@@ -54,10 +82,13 @@ const ProductSearch = () => {
     }
 
     useEffect(() => {
-        getData();
         changeOrder(1);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
+    useEffect(() => {
+        getData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[orderBy])
 
     return (
         <>
@@ -88,16 +119,14 @@ const ProductSearch = () => {
                         </div>
                         <div style={{fontSize:"10pt"}} className="flex gap-1 pl-5 text-black">
                             <div>직접입력</div>
-                            <input className="w-32 border border-gray-300"/>
+                            <input id="minPrice" className="w-32 border border-gray-300"/>
                             <div>~</div>
-                            <input className="w-32 border border-gray-300"/>
-                            <Link>
-                                <div style={{width:"25px", height:"25px", 
-                                    backgroundImage:"url(https://ssl.pstatic.net/shoppingsearch/static/pc/pc-240425-120020/img/sprite/png/spSearch.png)", 
-                                    backgroundSize:"255px 251px",
-                                    backgroundPosition:"-64px -32px"
-                                }}></div>
-                            </Link>
+                            <input id="maxPrice" className="w-32 border border-gray-300"/>
+                            <div onClick={getData} style={{width:"25px", height:"25px", cursor:"pointer",
+                                backgroundImage:"url(https://ssl.pstatic.net/shoppingsearch/static/pc/pc-240425-120020/img/sprite/png/spSearch.png)", 
+                                backgroundSize:"255px 251px",
+                                backgroundPosition:"-64px -32px"
+                            }}></div>
                         </div>
                     </div>
                 </div>
@@ -117,9 +146,9 @@ const ProductSearch = () => {
                         <div id="order3" onClick={() => changeOrder(3)} className='cursor-pointer'>
                             · 리뷰 많은순
                         </div>
-                        <div id="order4" onClick={() => changeOrder(4)} className='cursor-pointer'>
+                        {/* <div id="order4" onClick={() => changeOrder(4)} className='cursor-pointer'>
                             · 리뷰 좋은순
-                        </div>
+                        </div> */}
                         <div id="order5" onClick={() => changeOrder(5)} className='cursor-pointer'>
                             · 등록일순
                         </div>
@@ -133,6 +162,7 @@ const ProductSearch = () => {
                                     link={"/products?id=" + e.productId}
                                     name={e.productName}
                                     price={e.price}
+                                    discount={e.discountRate}
                                     delivery={e.deliveryPrice}
                                     seller={e.sellerName}
                                     // reviewCount={e.reviewCount}
