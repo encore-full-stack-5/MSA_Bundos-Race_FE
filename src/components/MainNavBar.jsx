@@ -20,7 +20,7 @@ const MainNavBar = () => {
 
     const login = () => {
         window.location.href = 
-            "http://192.168.0.12:5173/signin?redirect="
+            "http://211.198.134.9:5173/signin?redirect="
             + window.location.origin
             + "/login?redirect="
             + window.location.pathname;

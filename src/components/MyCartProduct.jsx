@@ -10,7 +10,7 @@ const MyCartProduct = (props) => {
     }
     const TotalPrice = () => {
         let sum = props.price + props.delivery;
-        sum -= props.price * (props.discount/100);
+        sum -= Math.round(props.price * (props.discount/100));
         props.options.forEach(e => sum += e.optionPrice);
         return sum + "원";
     }
@@ -42,7 +42,7 @@ const MyCartProduct = (props) => {
                                     {props.name}
                                 </div>
                                 <div className="font-bold">
-                                    {props.price * (1-(props.discount/100)) + "원"}
+                                    {Math.round(props.price * (1-(props.discount/100))) + "원"}
                                     {10 > 0 ? <span className="pl-1 line-through text-gray-400 font-normal">
                                         {props.price}
                                     </span> : ""}
@@ -69,7 +69,7 @@ const MyCartProduct = (props) => {
                             상품금액
                         </div>
                         <div className="font-bold">
-                            {props.price * (1-(props.discount/100))+"원"}
+                            {Math.round(props.price * (1-(props.discount/100)))+"원"}
                         </div>
                     </div>
                     <div className="flex-1 flex flex-col items-center justify-center">
@@ -103,7 +103,7 @@ const MyCartProduct = (props) => {
                             즉시할인예상금액
                         </div>
                         <div style={{color:"orangered"}}>
-                            {props.price * (props.discount/100)+"원"}
+                            {Math.round(props.price * (props.discount/100))+"원"}
                         </div>
                     </div>
                     <div className="border-r-2 border-gray-300 h-12 mx-10"/>

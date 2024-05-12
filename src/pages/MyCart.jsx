@@ -73,7 +73,7 @@ const MyCart = () => {
     const TotalPrice = () => {
         let total = 0;
         data.forEach(e => {
-            total += e.productPrice - e.productPrice * e.productDiscount/100 + e.productDelivery;
+            total += e.productPrice - Math.round(e.productPrice * e.productDiscount/100) + e.productDelivery;
             e.productOptions?.forEach(ee => {
                 total += ee.optionPrice;
             })
