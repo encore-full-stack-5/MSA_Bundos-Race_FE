@@ -170,6 +170,16 @@ const ProductDetail = (req, res) => {
         return "";
     }
 
+    const SumPrice = () => {
+        let sumPrice = data.price * (100-data.discountRate)/100;
+        
+        return (
+            <div className="text-red-600 text-2xl font-bold">
+                {sumPrice+"원"}
+            </div>
+        );
+    }
+
     const submitProduct = async () => {
         /*if (decodeURI(searchParams.get("action")) === "장바구니") {
             try{
@@ -288,9 +298,7 @@ const ProductDetail = (req, res) => {
                                             <hr />
                                             <div className='flex flex-row items-center my-5 justify-between'>
                                                 <div className='text-sm font-bold'>총 상품 금액</div>
-                                                <div className="text-red-600 text-2xl font-bold">
-                                                    {"0원"}
-                                                </div>
+                                                <SumPrice />
                                             </div>
                                             <div className='flex flex-row gap-2'>
                                                 <input type='submit' name="action"
