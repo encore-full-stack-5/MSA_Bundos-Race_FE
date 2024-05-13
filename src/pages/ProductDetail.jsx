@@ -108,6 +108,8 @@ const ProductDetail = (req, res) => {
 
     const [ReviewOrder, setReviewOrder] = useState("0");
     const [ReviewPopup, setReviewPopup] = useState("0");
+    const [sumPrice, setSumPrice] = useState(0);
+    const [submitMode, setSubmitMode] = useState();
     const [data, setData] = useState();
     const link = useRecoilValue(address);
     const navigate = useNavigate(); 
@@ -118,6 +120,7 @@ const ProductDetail = (req, res) => {
             );
             console.log(response.data);
             setData(response.data);
+            updatePrice(response.data.price * (100-response.data.discountRate)/100)
         } catch(error) {
             alert("상품 정보를 불러오는 중에 오류가 발생했습니다.")
         }
@@ -170,31 +173,51 @@ const ProductDetail = (req, res) => {
         return "";
     }
 
-    const SumPrice = () => {
-        let sumPrice = data.price * (100-data.discountRate)/100;
-        
-        return (
-            <div className="text-red-600 text-2xl font-bold">
-                {sumPrice+"원"}
-            </div>
-        );
+    const updatePrice = (e = 0) => {
+        let sum = e;
+        if (data) {
+            sum = data.price * (100-data.discountRate)/100
+            const form = document.getElementsByName("optionForm")[0].getElementsByTagName("select");
+            for(let i=0; i<form.length; i++) {
+                if(form[i].value) {
+                    const optionCode = form[i].value.split("_");
+                    sum += data.optionGroups[optionCode[0]].options[optionCode[1]].price;
+                }
+            }
+        }
+        setSumPrice(Math.round(sum));
     }
 
-    const submitProduct = async () => {
-        /*if (decodeURI(searchParams.get("action")) === "장바구니") {
+    const testFunc = async (e) => {
+        e.preventDefault()
+        if(submitMode === 1) {
             try{
                 const postOptions = [];
-                searchParams.getAll("options").forEach(e => {
-                    const str = e.split("_");
-                    const option = {
-                        optionGroupId: data.optionGroups[str[0]].id,
-                        optionGroupName: data.optionGroups[str[0]].name,
-                        optionId: data.optionGroups[str[0]].options[str[1]].id,
-                        optionName: data.optionGroups[str[0]].options[str[1]].name,
-                        optionPrice: data.optionGroups[str[0]].options[str[1]].price,
+                const form = document.getElementsByName("optionForm")[0].getElementsByTagName("select");
+                for(let i=0; i<form.length; i++) {
+                    if(form[i].value) {
+                        const str = form[i].value.split("_");
+                        const option = {
+                            optionGroupId: data.optionGroups[str[0]].id,
+                            optionGroupName: data.optionGroups[str[0]].name,
+                            optionId: data.optionGroups[str[0]].options[str[1]].id,
+                            optionName: data.optionGroups[str[0]].options[str[1]].name,
+                            optionPrice: data.optionGroups[str[0]].options[str[1]].price,
+                        }
+                        postOptions.push(option);
                     }
-                    postOptions.push(option);
-                });
+                }
+                // searchParams.getAll("options").forEach(e => {
+                //     const str = e.split("_");
+                //     const option = {
+                //         optionGroupId: data.optionGroups[str[0]].id,
+                //         optionGroupName: data.optionGroups[str[0]].name,
+                //         optionId: data.optionGroups[str[0]].options[str[1]].id,
+                //         optionName: data.optionGroups[str[0]].options[str[1]].name,
+                //         optionPrice: data.optionGroups[str[0]].options[str[1]].price,
+                //     }
+                //     postOptions.push(option);
+                // });
                 const response = await axios.post(
                     link + "/carts?token=" + localStorage.getItem("uuid"),
                     {
@@ -209,38 +232,17 @@ const ProductDetail = (req, res) => {
                         cartOption: [...postOptions],
                     }
                 );
-                console.log(response.data[0]);
+                console.log(postOptions);
+                alert("상품을 장바구니에 추가했습니다.");
             } catch(error) {
                 alert("상품을 장바구니에 담는 중에 오류가 발생했습니다.")
             }
-            navigate(window.location.pathname + "?id=" + data.id);
-        } else if (decodeURI(searchParams.get("action")) === "구매하기") {
-            //
-            // navigate(window.location.pathname + "?id=" + data.id);
-            const id = data.id
-            navigate("." + "?id=" + id);
-        }*/
-    }
-
-    const submitCheckLogin = (e) => {
-        
-        e.preventDefault();
-        // if (!localStorage.getItem("uuid")) {
-        //     e.preventDefault();
-        //     alert("로그인이 필요한 서비스입니다.");
-        // }
+        }
     }
 
     const [searchParams] = useSearchParams();
-    // useEffect(() => {
-    //     if(searchParams.get("action") === null) 
-    //         getData();
-    //     else 
-    //         submitProduct(); 
-    // },[])
     useEffect(() => {
         getData();
-        // ChangeReivewOrder(0);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
@@ -284,29 +286,31 @@ const ProductDetail = (req, res) => {
                                                     {data.discountRate > 0 ? data.price + "원" : ""}
                                                 </div>
                                                 <div className="text-2xl">
-                                                    {data.discountRate > 0 ? data.price * (100-data.discountRate)/100 + "원" : data.price + "원"}
+                                                    {data.discountRate > 0 ? Math.round(data.price * (100-data.discountRate)/100) + "원" : data.price + "원"}
                                                 </div>
                                             </div>
                                         </div>
                                         <hr />
-                                        <form onSubmit={e => submitCheckLogin(e)} method='get'>
+                                        <form name="optionForm" onSubmit={(e) => testFunc(e)}>
                                             <div className='flex flex-col my-5 gap-2'>
                                                 {data.optionGroups.map((e, i) => (
-                                                    <ProductOptionGroup id={i} name={e.name} options={e.options} require={e.necessary}/>
+                                                    <ProductOptionGroup id={i} name={e.name} options={e.options} require={e.necessary} onChange={updatePrice}/>
                                                 ))}
                                             </div>
                                             <hr />
                                             <div className='flex flex-row items-center my-5 justify-between'>
                                                 <div className='text-sm font-bold'>총 상품 금액</div>
-                                                <SumPrice />
+                                                <div className="text-red-600 text-2xl font-bold">
+                                                    {sumPrice+"원"}
+                                                </div>
                                             </div>
                                             <div className='flex flex-row gap-2'>
-                                                <input type='submit' name="action"
+                                                <input type='submit' name="action" onClick={() => setSubmitMode(1)}
                                                     className='flex-1 rounded-e rounded-s border border-gray-400 text-center py-2 cursor-pointer' 
                                                     style={{fontSize:"11pt", fontWeight:"600"}}
                                                     value={"장바구니"}>
                                                 </input>
-                                                <input type='submit' name="action"
+                                                <input type='submit' name="action" onClick={() => setSubmitMode(2)}
                                                     className='flex-1 rounded-e rounded-s border border-gray-400 text-center py-2 cursor-pointer' 
                                                     style={{fontSize:"11pt", fontWeight:"600", backgroundColor:"#25ce63", borderColor:"#25ce63"}}
                                                     value={"구매하기"}>

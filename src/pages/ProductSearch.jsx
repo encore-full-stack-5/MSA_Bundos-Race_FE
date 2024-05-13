@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { Link } from "react-router-dom"
 import SearchProductItem from '../components/SearchProductItem'
 import TopButton from '../components/TopButton'
 import axios from "axios";
@@ -13,6 +12,7 @@ const ProductSearch = () => {
     const [brandFilter, setBrandFilter] = useState(null);
     const [orderBy, setOrder] = useState(1);
     const [page, setPage] = useState(1);
+    const [sellers, setSellers] = useState();
     const [data, setData] = useState({});
     const [searchParams] = useSearchParams();
     const link = useRecoilValue(address);
@@ -22,8 +22,9 @@ const ProductSearch = () => {
             const params = {
                 categoryId:searchParams.get("id")
             };
-            if (document.getElementById("minPrice").value != "") params.startPrice = document.getElementById("minPrice").value; 
-            if (document.getElementById("maxPrice").value != "") params.endPrice = document.getElementById("maxPrice").value; 
+            if (document.getElementById("minPrice").value !== "") params.startPrice = document.getElementById("minPrice").value; 
+            if (document.getElementById("maxPrice").value !== "") params.endPrice = document.getElementById("maxPrice").value;
+            if (brandFilter != null) params.sellerId = sellers[brandFilter].id;
             switch(orderBy) {
                 case 1:
                     params.sortBy = "price";
@@ -44,8 +45,7 @@ const ProductSearch = () => {
                 default:
                     alert("이게 이럴리가 없는데")
             }
-            // params.page = 1;
-            // params.size = 1;
+            params.page = page;
             const response = await axios.get(
                 link + "/products",
                 {params:params}
@@ -55,6 +55,17 @@ const ProductSearch = () => {
             setData(response.data);
         } catch(error) {
             alert("상품 정보를 불러오는데 오류가 발생했습니다.")
+        }
+    }
+    const getSellerData = async () => {
+        try{
+            const response = await axios.get(
+                link + "/sellers/category/" + searchParams.get("id")
+            );
+            console.log(response.data);
+            setSellers(response.data);
+        } catch(error) {
+            alert("판매자 정보를 불러오는 중에 오류가 발생했습니다.")
         }
     }
 
@@ -82,13 +93,15 @@ const ProductSearch = () => {
     }
 
     useEffect(() => {
+        getSellerData();
+        setPage(1);
         changeOrder(1);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
     useEffect(() => {
         getData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[orderBy])
+    },[orderBy, brandFilter])
 
     return (
         <>
@@ -102,12 +115,12 @@ const ProductSearch = () => {
                     <div className="w-auto bg-white flex flex-row text-white text-sm items-center">
                         <div style={{width:"160px", height:"43px", backgroundColor:"rgb(82, 95, 120)"}}
                             className="flex items-center pl-5">
-                            브랜드
+                            판매자
                         </div>
                         <div style={{fontSize:"10pt"}} className="flex gap-6 pl-5 text-gray-700 text-sm">
-                            {testBrandArr.map((brand, i) => (
+                            {sellers?.map((seller, i) => (
                                 <div id={"brand"+i} onClick={() => changeBrandFilter(i)} className='cursor-pointer'>
-                                    {brand}
+                                    {seller.name}
                                 </div>
                             ))}
                         </div>
