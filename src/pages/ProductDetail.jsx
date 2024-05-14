@@ -44,66 +44,6 @@ const ProductDetail = (req, res) => {
             options:["크기선택:왕특(18mm 이상)", "중량선택:1kg(250g4팩)"]
         },
     ];
-    const testData = {
-        id: 1,
-        name: "test",
-        description: "테스트 상품 설명",
-        images: [
-            "image1.jpg",
-            "image2.jpg"
-        ],
-        price: 10000,
-        discountRate: 10,
-        deliveryPrice: 3000,
-        optionGroups: [
-            {
-                id: 1,
-                necessary: true,
-                name: "옵션 그룹 1",
-                options: [
-                    {
-                        id: 1,
-                        name: "옵션 1",
-                        price: 500,
-                        amount: 50
-                    },
-                    {
-                        id: 2,
-                        name: "옵션 2",
-                        price: 1500,
-                        amount: 100
-                    }
-                ]
-            },
-            {
-                id: 2,
-                necessary: true,
-                name: "옵션 그룹 2",
-                options: [
-                    {
-                        id: 3,
-                        name: "옵션 3",
-                        price: 2500,
-                        amount: 200
-                    }
-                ]
-            }
-        ],
-        amount: 1000,
-        createdAt: "2024-05-08T09:17:52.154607",
-        status: 1,
-        sellCount: 0,
-        seller: {
-            id: 1,
-            name: "Seller 1",
-            uid: null,
-            createdAt: "2024-05-07T09:17:41.896479"
-        },
-        category: {
-            id: 1,
-            name: "여성패션"
-        }
-    }
 
 
     const [ReviewOrder, setReviewOrder] = useState("0");
@@ -112,7 +52,6 @@ const ProductDetail = (req, res) => {
     const [submitMode, setSubmitMode] = useState();
     const [data, setData] = useState();
     const link = useRecoilValue(address);
-    const navigate = useNavigate(); 
     const getData = async () => {
         try{
             const response = await axios.get(
@@ -232,6 +171,7 @@ const ProductDetail = (req, res) => {
                         cartOption: [...postOptions],
                     }
                 );
+                console.log(response);
                 console.log(postOptions);
                 alert("상품을 장바구니에 추가했습니다.");
             } catch(error) {
