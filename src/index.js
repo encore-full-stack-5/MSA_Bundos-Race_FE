@@ -13,12 +13,15 @@ import MyCart from './pages/MyCart';
 import MyOrder from './pages/MyOrder';
 import MyReview from './pages/MyReview';
 import Login from './pages/Login';
+import CanWriteReview from "./pages/CanWriteReview";
+
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App/>,
+    element: <App />,
     children: [
+
       { path: "/", element: <Home/> },
       { path: "/home", element: <Home/> },
       { path: "/login", element: <Login/> },
@@ -27,12 +30,14 @@ const router = createBrowserRouter([
       { path: "/my/cart", element: <MyCart/> },
       { path: "/my/orders", element: <MyOrder/> },
       { path: "/my/review", element: <MyReview/> },
+      { path: "/my/writable-review", element: <CanWriteReview /> },
       { path: "/1", element: <Test1/> },
       { path: "/2", element: <Test2/> },
     ]
   }
+
 ]);
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <RecoilRoot>
     <RouterProvider router={router} />
