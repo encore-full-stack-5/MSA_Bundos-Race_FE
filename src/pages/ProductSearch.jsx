@@ -7,8 +7,6 @@ import { address } from '../store/address';
 import { useSearchParams  } from "react-router-dom"
 
 const ProductSearch = () => {
-    const testBrandArr = ["오뚜기", "CJ", "청정원", "풀무원", "농심", "동원"];
-
     const [brandFilter, setBrandFilter] = useState(null);
     const [orderBy, setOrder] = useState(1);
     const [page, setPage] = useState(1);
@@ -46,6 +44,7 @@ const ProductSearch = () => {
                     alert("이게 이럴리가 없는데")
             }
             params.page = page;
+            // params.size = 2;
             const response = await axios.get(
                 link + "/products",
                 {params:params}
@@ -73,6 +72,7 @@ const ProductSearch = () => {
         const beforeOrder = document.getElementById("order"+orderBy);
         beforeOrder.style.color = "rgb(140,140,140)"
         setOrder(n);
+        setPage(1);
         const afterOrder = document.getElementById("order"+n);
         afterOrder.style.color = "black"
     }
@@ -90,6 +90,49 @@ const ProductSearch = () => {
             afterBrand.style.color = "black"
             afterBrand.style.fontWeight = 600;
         }
+        setPage(1);
+    }
+
+    const PageNum = () => {
+
+    }
+    const PageSelect = () => {
+        let list = [];
+
+        if (1 < page) list.push(
+            <div onClick={() => setPage(page-1)} className="text-sm text-gray-400 flex flex-row items-center">
+                &lt; 이전
+                <div className='border-r border-gray-300 h-4 ml-2'/>
+            </div>
+        );
+
+        for(let i = page-5 < 1 ? 1 : page-5; i<page+5 && i<=data.totalPages; i++){
+            console.log(i)
+            if(i == page) {
+                list.push(
+                    <div className='font-bold text-center w-6 border' style={{color:"orangered"}} onClick={() => setPage(i)}>
+                        {i}
+                    </div>
+                );
+            } else {
+                list.push(
+                    <div className='font-bold text-center w-6' onClick={() => setPage(i)}>
+                        {i}
+                    </div>
+                );
+            }
+        }
+
+        if (data.totalPages > page) list.push(
+            <div onClick={() => setPage(page+1)} className="text-sm text-gray-400 flex flex-row items-center">
+                <div className='border-r border-gray-300 h-4 mr-2'/>
+                다음 &gt;
+            </div>
+        );
+
+        return (
+            [...list]
+        );
     }
 
     useEffect(() => {
@@ -101,7 +144,7 @@ const ProductSearch = () => {
     useEffect(() => {
         getData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[orderBy, brandFilter])
+    },[orderBy, brandFilter, page])
 
     return (
         <>
@@ -184,6 +227,9 @@ const ProductSearch = () => {
                                 />
                             </div>
                         ))}
+                    </div>
+                    <div className='flex flex-row justify-center items-center gap-1 pt-8 pb-12'>
+                        {data.pageable ? <PageSelect /> : ""}
                     </div>
                 </div>
             </div>

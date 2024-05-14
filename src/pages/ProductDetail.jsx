@@ -272,7 +272,7 @@ const ProductDetail = (req, res) => {
                                     </div>
                                 </div>
 
-                                <div className="flex flex-col justify-start flex-1">
+                                <div className="flex flex-col justify-start flex-1" style={{maxWidth:"50%"}}>
                                     <div className="p-6">
                                         <div className="font-bold text-lg">
                                             {data.name}
