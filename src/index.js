@@ -13,12 +13,14 @@ import MyCart from "./pages/MyCart";
 import MyOrder from "./pages/MyOrder";
 import MyReview from "./pages/MyReview";
 import CanWriteReview from "./pages/CanWriteReview";
+import ReviewWrite from "./pages/ReviewWrite";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
+      { path: "/", element: <Home /> },
       { path: "/home", element: <Home /> },
       { path: "/search/category/*", element: <ProductSearch /> },
       { path: "/products/*", element: <ProductDetail /> },
@@ -26,6 +28,7 @@ const router = createBrowserRouter([
       { path: "/my/orders", element: <MyOrder /> },
       { path: "/my/review", element: <MyReview /> },
       { path: "/my/writable-review", element: <CanWriteReview /> },
+      { path: "/review-write", element: <ReviewWrite /> },
       { path: "/1", element: <Test1 /> },
       { path: "/2", element: <Test2 /> },
     ],

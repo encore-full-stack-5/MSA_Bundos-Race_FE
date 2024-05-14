@@ -143,7 +143,7 @@ const MyReview = () => {
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-around",
-                  paddingRight: "60%",
+                  paddingRight: "75%",
                 }}
               >
                 <RatingToStar rating="3" />
@@ -171,8 +171,8 @@ const MyReview = () => {
                 <button
                   style={{
                     position: "absolute",
-                    top: "50%",
-                    right: "15%",
+                    top: "53%",
+                    right: "12%",
                     transform: "translateY(-50%)",
                     border: "1px solid #ccc",
                     borderRadius: "4px",
@@ -194,8 +194,8 @@ const MyReview = () => {
                     width: "16px",
                     height: "15px",
                     position: "absolute",
-                    top: "45%",
-                    right: "10%",
+                    top: "46%",
+                    right: "12%",
                   }}
                   onClick={onClickDelete}
                 ></div>
