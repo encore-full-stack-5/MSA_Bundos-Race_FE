@@ -15,9 +15,7 @@ const MyCart = () => {
 
     const getData = async () => {
         try{
-            const response = await axios.get(
-                "http://" + link + "/carts?id=" + "00000000-0000-0000-0000-000000000001"//localStorage.getItem("id")
-            );
+            const response = await axios.get(link + "/carts?token=" + localStorage.getItem("uuid"));
             console.log(response.data);
             let checkArr = []
             for(let i=0; i<response.data.length; i++)
@@ -34,11 +32,29 @@ const MyCart = () => {
     const addOrderAll = async () => {
         alert("모두 주문")
     }
-    const deleteCart = async () => {
-        alert("상품 삭제")
+    const deleteCart = async (n) => {
+        try{
+            const response = await axios.delete(link + "/carts?id=" + data[n].cartProductId);
+            console.log(response);
+            getData();
+            alert("상품을 내 장바구니에서 제외했습니다.");
+        } catch(error) {
+            alert("장바구니를 갱신하는데 오류가 발생했습니다.");
+        }
     }
     const deleteCheckedCart = async () => {
-        alert("선택상품 삭제")
+        try {
+            checked.forEach(async (e,i) => {
+                if (e) {
+                    const response = await axios.delete(link + "/carts?id=" + data[i].cartProductId);
+                    console.log(response);
+                }
+            });
+            alert("선택된 상품들을 내 장바구니에서 제외했습니다.");
+            window.location.reload();
+        } catch(error) {
+            alert("장바구니를 갱신하는데 오류가 발생했습니다.");
+        }
     }
 
 
@@ -57,7 +73,10 @@ const MyCart = () => {
     const TotalPrice = () => {
         let total = 0;
         data.forEach(e => {
-            total += e.productPrice - e.productPrice * e.productDiscount/100 + e.productDelivery;
+            total += e.productPrice - Math.round(e.productPrice * e.productDiscount/100) + e.productDelivery;
+            e.productOptions?.forEach(ee => {
+                total += ee.optionPrice;
+            })
         });
         return (
             <div className="pl-4 text-3xl font-bold">
@@ -102,8 +121,8 @@ const MyCart = () => {
                         delivery={e.productDelivery}
                         discount={e.productDiscount}
                         image={e.productImage}
-                        name={e.productName}
-                        options={e.productOptions}
+                        name={e.productName}    
+                        options={e.productOptions || []}
                         price={e.productPrice}
                         qty={e.productQty}
                         seller={e.productSeller}

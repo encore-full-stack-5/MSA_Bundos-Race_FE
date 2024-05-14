@@ -1,8 +1,8 @@
 const ProductOptionItem = (props) => {
     return (
         <option 
-            id={"group" + props.group + "option" + props.id} 
-            value={props.id} 
+            id={"group" + props.groupIndex + "option" + props.optionIndex} 
+            value={props.groupIndex + "_" +props.optionIndex} 
             disabled={props.qty === 0}
             className={props.qty === 0 ? "text-gray-400"  : "text-stone-500" }
             style={{fontSize:"10pt"}}
