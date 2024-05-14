@@ -129,6 +129,10 @@ const ProductDetail = (req, res) => {
 
     const testFunc = async (e) => {
         e.preventDefault()
+        if (!localStorage.getItem("uuid")) {
+            alert("로그인이 필요한 서비스입니다.");
+            return;
+        }
         if(submitMode === 1) {
             try{
                 const postOptions = [];
@@ -146,17 +150,6 @@ const ProductDetail = (req, res) => {
                         postOptions.push(option);
                     }
                 }
-                // searchParams.getAll("options").forEach(e => {
-                //     const str = e.split("_");
-                //     const option = {
-                //         optionGroupId: data.optionGroups[str[0]].id,
-                //         optionGroupName: data.optionGroups[str[0]].name,
-                //         optionId: data.optionGroups[str[0]].options[str[1]].id,
-                //         optionName: data.optionGroups[str[0]].options[str[1]].name,
-                //         optionPrice: data.optionGroups[str[0]].options[str[1]].price,
-                //     }
-                //     postOptions.push(option);
-                // });
                 const response = await axios.post(
                     link + "/carts?token=" + localStorage.getItem("uuid"),
                     {
