@@ -14,7 +14,8 @@ const ShoppingMyBox = (props) => {
         <div className="absolute bg-white w-36 top-6 left-1/2 -translate-x-1/2 flex flex-col p-4 font-normal text-gray-600 gap-2 drop-shadow-md" style={{fontSize:"10pt"}}>
             <div onClick={() => gotoMyPage("/my/cart")} className="cursor-pointer">장바구니</div>
             <div onClick={() => gotoMyPage("/my/orders")}  className="cursor-pointer">주문확인</div>
-            <div onClick={() => gotoMyPage("/my/review")}  className="cursor-pointer">상품 리뷰</div>
+            <div onClick={() => gotoMyPage("/my/review")}  className="cursor-pointer">나의 리뷰</div>
+            <div onClick={() => gotoMyPage("/my/writable-review")}  className="cursor-pointer">작성할 리뷰</div>
         </div>
     )
 }

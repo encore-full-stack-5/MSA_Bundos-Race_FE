@@ -4,7 +4,7 @@ import ReviewPopupBox from "../components/ReviewPopupBox";
 import ReviewFullBox from "../components/ReviewFullBox";
 import TopButton from "../components/TopButton";
 import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { useRecoilValue } from "recoil";
 import { address } from "../store/address";
@@ -16,6 +16,7 @@ const ProductDetail = (req, res) => {
   const [ReviewPopup, setReviewPopup] = useState("0");
   const [sumPrice, setSumPrice] = useState(0);
   const [submitMode, setSubmitMode] = useState();
+  const navigate = useNavigate(); 
   const [data, setData] = useState();
   const link = useRecoilValue(address);
   const getData = async () => {
@@ -112,80 +113,101 @@ const ProductDetail = (req, res) => {
         return;
     }
     if(submitMode === 1) {
-        try{
-            const postOptions = [];
-            const form = document.getElementsByName("optionForm")[0].getElementsByTagName("select");
-            for(let i=0; i<form.length; i++) {
-                if(form[i].value) {
-                    const str = form[i].value.split("_");
-                    const option = {
-                        optionGroupId: data.optionGroups[str[0]].id,
-                        optionGroupName: data.optionGroups[str[0]].name,
-                        optionId: data.optionGroups[str[0]].options[str[1]].id,
-                        optionName: data.optionGroups[str[0]].options[str[1]].name,
-                        optionPrice: data.optionGroups[str[0]].options[str[1]].price,
-                    }
-                    postOptions.push(option);
-                }
+      try{
+        const postOptions = [];
+        const form = document.getElementsByName("optionForm")[0].getElementsByTagName("select");
+        for(let i=0; i<form.length; i++) {
+          if(form[i].value) {
+            const str = form[i].value.split("_");
+            const option = {
+              optionGroupId: data.optionGroups[str[0]].id,
+              optionGroupName: data.optionGroups[str[0]].name,
+              optionId: data.optionGroups[str[0]].options[str[1]].id,
+              optionName: data.optionGroups[str[0]].options[str[1]].name,
+              optionPrice: data.optionGroups[str[0]].options[str[1]].price,
             }
-            const response = await axios.post(
-                link + "/carts?token=" + localStorage.getItem("uuid"),
-                {
-                    productId: data.id,
-                    productImage: data.images[0],
-                    productName: data.name,
-                    productPrice: data.price,
-                    productDiscount: data.discountRate,
-                    productQty: 1,
-                    productSeller: data.seller.name,
-                    productDelivery: data.deliveryPrice,
-                    cartOption: [...postOptions],
-                }
-            );
-            console.log(response);
-            console.log(postOptions);
-            alert("상품을 장바구니에 추가했습니다.");
-        } catch(error) {
-            alert("상품을 장바구니에 담는 중에 오류가 발생했습니다.");
+            postOptions.push(option);
+          }
         }
-      } else if (submitMode === 2) {
-        try{
-            const postOptions = [];
-            const form = document.getElementsByName("optionForm")[0].getElementsByTagName("select");
-            for(let i=0; i<form.length; i++) {
-                if(form[i].value) {
-                    const str = form[i].value.split("_");
-                    const option = {
-                        optionGroupId: data.optionGroups[str[0]].id,
-                        optionGroupName: data.optionGroups[str[0]].name,
-                        optionId: data.optionGroups[str[0]].options[str[1]].id,
-                        optionName: data.optionGroups[str[0]].options[str[1]].name,
-                        optionPrice: data.optionGroups[str[0]].options[str[1]].price,
-                    }
-                    postOptions.push(option);
-                }
-            }
-            const response = await axios.post(
-                link + "/carts?token=" + localStorage.getItem("uuid"),
-                {
-                    productId: data.id,
-                    productImage: data.images[0],
-                    productName: data.name,
-                    productPrice: data.price,
-                    productDiscount: data.discountRate,
-                    productQty: 1,
-                    productSeller: data.seller.name,
-                    productDelivery: data.deliveryPrice,
-                    cartOption: [...postOptions],
-                }
-            );
-            console.log(response);
-            console.log(postOptions);
-        } catch(error) {
-            alert("상품을 주문하는 중에 오류가 발생했습니다.");
+        const response = await axios.post(
+          link + "/carts?token=" + localStorage.getItem("uuid"),
+          {
+            productId: data.id,
+            productImage: data.images[0],
+            productName: data.name,
+            productPrice: data.price,
+            productDiscount: data.discountRate,
+            productQty: 1,
+            productSeller: data.seller.name,
+            productDelivery: data.deliveryPrice,
+            cartOption: [...postOptions],
+          }
+        );
+        console.log(response);
+        console.log(postOptions);
+        alert("상품을 장바구니에 추가했습니다.");
+      } catch(error) {
+          alert("상품을 장바구니에 담는 중에 오류가 발생했습니다.");
+      }
+    } else if (submitMode === 2) {
+      // try{
+      //   const postOptions = [];
+      //   const form = document.getElementsByName("optionForm")[0].getElementsByTagName("select");
+      //   for(let i=0; i<form.length; i++) {
+      //     if(form[i].value) {
+      //       const str = form[i].value.split("_");
+      //       const option = {
+      //         optionGroupId: data.optionGroups[str[0]].id,
+      //         optionGroupName: data.optionGroups[str[0]].name,
+      //         optionId: data.optionGroups[str[0]].options[str[1]].id,
+      //         optionName: data.optionGroups[str[0]].options[str[1]].name,
+      //         optionPrice: data.optionGroups[str[0]].options[str[1]].price,
+      //       }
+      //       postOptions.push(option);
+      //     }
+      //   }
+      //   const response = await axios.post(
+      //     link + "/carts?token=" + localStorage.getItem("uuid"),
+      //     {
+      //       productId: data.id,
+      //       productImage: data.images[0],
+      //       productName: data.name,
+      //       productPrice: data.price,
+      //       productDiscount: data.discountRate,
+      //       productQty: 1,
+      //       productSeller: data.seller.name,
+      //       productDelivery: data.deliveryPrice,
+      //       cartOption: [...postOptions],
+      //     }
+      //   );
+      //   console.log(response);
+      //   console.log(postOptions);
+      // } catch(error) {
+      //     alert("상품을 주문하는 중에 오류가 발생했습니다.");
+      // }
+      let optionsTxt = "";
+      let queryParameter = 
+          `/orders?id=${data.id}`+
+          `&name=${data.name}`+
+          `&image=${data.images[0]}`+
+          `&sellerName=${data.seller.name}`+
+          `&sellerId=${data.seller.id}`+
+          `&totalPrice=${sumPrice}`
+      const form = document.getElementsByName("optionForm")[0].getElementsByTagName("select");
+      for(let i=0; i<form.length; i++) {
+        if(form[i].value) {
+          const str = form[i].value.split("_");
+          queryParameter += `&optionsId=${data.optionGroups[str[0]].options[str[1]].id}`;
+          queryParameter += `&optionsName=${data.optionGroups[str[0]].options[str[1]].name}`;
+          queryParameter += `&optionsGId=${data.optionGroups[str[0]].id}`;
+          queryParameter += `&optionsGName=${data.optionGroups[str[0]].name}`;
+          optionsTxt += `${data.optionGroups[str[0]].name}` + ":" + `${data.optionGroups[str[0]].options[str[1]].name}` + " ";
         }
       }
+      queryParameter += `&optionTxt=${optionsTxt}`;
+      navigate(queryParameter);
     }
+  }
 
   const [searchParams] = useSearchParams();
   useEffect(() => {

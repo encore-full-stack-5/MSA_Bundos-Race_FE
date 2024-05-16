@@ -77,10 +77,11 @@ const MainNavBar = () => {
                         style={{paddingLeft:"12vw", paddingRight:"12vw", marginLeft:"1vw", marginRight:"1vw", flex: "0.35"}}
                         className="flex flex-row justify-between items-center border-b border-opacity-30 border-gray-500"
                     >
-                        <Link to={"http://192.168.0.16:3001/"}>
+                        <Link to={"http://192.168.0.33:3000/"}>
                         <div className="font-extrabold">{/*onClick={() => {window.open("http://www.naver.com")}}>*/}
                             NAVER
                         </div>
+                        </Link>
                         {/* </Link> */}
                         <div className="flex flex-row gap-4">
                             <div onClick={gotoMyCart} className="flex flex-row gap-1 cursor-pointer">

@@ -1,5 +1,9 @@
 import { Card } from "antd";
 import "./payment.css";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { address } from "../../store/address";
 
 const productData = {
   productId: 1,
@@ -28,22 +32,53 @@ const productData = {
 };
 
 const PaymentComponent = () => {
-  const username = "김철순";
-  const seller = productData.sellerName;
-  const productName = productData.name;
-  const productAmount = productData.amount;
-  const img = productData.images[0];
-  const totalMoney = productData.totalPrice;
-  let option = [];
-  productData.options.forEach((el) => {
-    const req = [
-      el.optionGroupId,
-      el.optionGroupName,
-      el.optionId,
-      el.optionName,
-    ];
-    option.push(req);
-  });
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate(); 
+  const link = useRecoilValue(address);
+  const username = "박부릉도";
+
+  const addOrder = async () => {
+    try{
+      console.log(searchParams);
+
+      const postOptions = [];
+      const optionNum = searchParams.getAll("optionsName").length
+      for(let i=0; i<optionNum; i++) {
+        const option = {
+          optionGroupId: searchParams.getAll("optionsGId")[i],
+          optionGroupName: searchParams.getAll("optionsGName")[i],
+          optionId: searchParams.getAll("optionsId")[i],
+          optionName: searchParams.getAll("optionsName")[i],
+          amount: 1
+        }
+        postOptions.push(option);
+      }
+
+      const response = await axios.post(
+        link + "/orders/create?token=" + localStorage.getItem("uuid"),
+        {
+          productId: searchParams.get("id"),
+          name: searchParams.get("name"),
+          image: searchParams.get("image"),
+          sellerId: searchParams.get("sellerId"),
+          sellerName: searchParams.get("sellerName"),
+          options: postOptions,
+          totalPrice: searchParams.get("totalPrice"),
+          amount: 1,
+          deliveryMemo: document.getElementById("deliveryMemo").value
+        }
+      );
+      console.log(response);
+      console.log(postOptions);
+      alert("상품을 주문했습니다.");
+      navigate("/home");
+
+    }catch(e) {
+      console.log(e);
+      alert("주문을 완료하는중 오류가 발생했습니다.")
+    }
+  }
+
 
   return (
     <div
@@ -79,6 +114,7 @@ const PaymentComponent = () => {
                 배송메모 개별 입력
               </label>
               <textarea
+                id="deliveryMemo"
                 rows={5}
                 placeholder="여기에 입력해주세요."
                 className="w-full h-full mt-5 text- border-double border p-1 resize-none"
@@ -110,32 +146,26 @@ const PaymentComponent = () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  <h3 style={{ fontSize: "20px" }}>{seller}</h3>
+                  <h3 style={{ fontSize: "20px" }}>{searchParams.get("seller")}</h3>
                   <h3
-                    style={{
-                      fontSize: "20px",
-                    }}
+                    style={{fontSize: "20px",}}
+                    className="border border-gray-400 rounded-md px-2 py-0.5 cursor-pointer"
+                    onClick={() => addOrder()}
                   >
-                    3000
+                    주문하기
                   </h3>
                 </div>
                 <div style={{ display: "flex" }}>
                   <div className="m-3">
-                    <img src={img} className="w-4 h-5" alt="사진이 없습니다." />
+                    <img src={searchParams.get("image")} className="h-20 aspect-square" alt="사진이 없습니다." />
                   </div>
                   <div>
-                    <span>{productName}</span>
+                    <span>{searchParams.get("name")}</span>
 
                     <div style={{ display: "flex" }}>
-                      {option.map((el) => (
-                        <>
-                          <span>{el[1]}</span>
-                          <span>{"  "}</span>
-                          <span>{el[3]}</span>
-                        </>
-                      ))}
+                      {searchParams.get("optionTxt")}
                     </div>
-                    <strong>{totalMoney}</strong>
+                    <strong>{"가격" + searchParams.get("totalPrice") + "원"}</strong>
                   </div>
                 </div>
               </div>

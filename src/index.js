@@ -16,8 +16,6 @@ import Login from "./pages/Login";
 import Payment from "./pages/Payment";
 import CanWriteReview from "./pages/CanWriteReview";
 import ReviewWrite from "./pages/ReviewWrite";
-import CanWriteReview from "./pages/CanWriteReview";
-import ReviewWrite from "./pages/ReviewWrite";
 
 const router = createBrowserRouter([
   {
