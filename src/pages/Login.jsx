@@ -11,9 +11,8 @@ const Login = (props) => {
 
     const parseLogin = async () => {
         const response = await axios.get(link+"/auth?token=" + searchParams.get("token"));
-
         localStorage.setItem("uuid", response.data.token);
-        navigate(searchParams.get("redirect"));
+        navigate(searchParams.get("redirect") + "?id=" + searchParams.get("id"));
         window.location.reload();
     }
 

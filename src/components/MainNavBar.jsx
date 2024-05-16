@@ -23,11 +23,13 @@ const MainNavBar = () => {
             "http://192.168.0.12:5173/signin?redirect="
             + window.location.origin
             + "/login?redirect="
-            + window.location.pathname;
+            + window.location.pathname
+            + window.location.search;
     }
     const logout = () => {
         localStorage.removeItem("uuid");
         alert("로그아웃 되었습니다.");
+        // if() navigate("/home");
         window.location.reload();
     }
 
