@@ -50,8 +50,10 @@ const MainNavBar = () => {
         console.log(e)
         if (e.key === "Enter" || e.target.id === "search-btn"){
             const input = document.getElementById("search-input").value.trim();
-            if (input != "") 
+            if (input != "") {
                 navigate("/search?q=" + input);
+                window.location.reload();
+            }
         }
     }
 

@@ -74,7 +74,7 @@ const ProductSearch = () => {
                 link + "/search?keyword=" + searchParams.get("q")
             );
             console.log(response.data);
-            let temp;
+            let temp = {content:null};
             temp.content = response.data;
             setData(temp)
         } catch(error) {
