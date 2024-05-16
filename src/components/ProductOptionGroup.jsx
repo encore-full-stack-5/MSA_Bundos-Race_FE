@@ -2,6 +2,7 @@ import ProductOptionItem from '../components/ProductOptionItem'
 
 const ProductOptionGroup = (props) => {
     return (
+
         <select 
             id={"group" + props.id} 
             onChange={props.onChange}
