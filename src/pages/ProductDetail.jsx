@@ -37,7 +37,7 @@ const ProductDetail = (req, res) => {
     const id = searchParams.get("id");
     try {
       const response = await axios.get(
-        `http://localhost:8081/api/v1/reviews/${id}`
+        `${link}/reviews/${id}`
       );
       console.log(id);
       console.log(response.data);
@@ -106,82 +106,52 @@ const ProductDetail = (req, res) => {
     setSumPrice(Math.round(sum));
   };
 
-    const testFunc = async (e) => {
-        e.preventDefault()
-        if (!localStorage.getItem("uuid")) {
-            alert("로그인이 필요한 서비스입니다.");
-            return;
-        }
-        if(submitMode === 1) {
-            try{
-                const postOptions = [];
-                const form = document.getElementsByName("optionForm")[0].getElementsByTagName("select");
-                for(let i=0; i<form.length; i++) {
-                    if(form[i].value) {
-                        const str = form[i].value.split("_");
-                        const option = {
-                            optionGroupId: data.optionGroups[str[0]].id,
-                            optionGroupName: data.optionGroups[str[0]].name,
-                            optionId: data.optionGroups[str[0]].options[str[1]].id,
-                            optionName: data.optionGroups[str[0]].options[str[1]].name,
-                            optionPrice: data.optionGroups[str[0]].options[str[1]].price,
-                        }
-                        postOptions.push(option);
-                    }
-                }
-                const response = await axios.post(
-                    link + "/carts?token=" + localStorage.getItem("uuid"),
-                    {
-                        productId: data.id,
-                        productImage: data.images[0],
-                        productName: data.name,
-                        productPrice: data.price,
-                        productDiscount: data.discountRate,
-                        productQty: 1,
-                        productSeller: data.seller.name,
-                        productDelivery: data.deliveryPrice,
-                        cartOption: [...postOptions],
-                    }
-                );
-                console.log(response);
-                console.log(postOptions);
-                alert("상품을 장바구니에 추가했습니다.");
-            } catch(error) {
-                alert("상품을 장바구니에 담는 중에 오류가 발생했습니다.")
-            }
-        }
-        // searchParams.getAll("options").forEach(e => {
-        //     const str = e.split("_");
-        //     const option = {
-        //         optionGroupId: data.optionGroups[str[0]].id,
-        //         optionGroupName: data.optionGroups[str[0]].name,
-        //         optionId: data.optionGroups[str[0]].options[str[1]].id,
-        //         optionName: data.optionGroups[str[0]].options[str[1]].name,
-        //         optionPrice: data.optionGroups[str[0]].options[str[1]].price,
-        //     }
-        //     postOptions.push(option);
-        // });
-        const response = await axios.post(
-          link + "/carts?token=" + localStorage.getItem("uuid"),
-          {
-            productId: data.id,
-            productImage: data.images[0],
-            productName: data.name,
-            productPrice: data.price,
-            productDiscount: data.discountRate,
-            productQty: 1,
-            productSeller: data.seller.name,
-            productDelivery: data.deliveryPrice,
-            cartOption: [...postOptions],
-          }
-        );
-        console.log(postOptions);
-        alert("상품을 장바구니에 추가했습니다.");
-      } catch (error) {
-        alert("상품을 장바구니에 담는 중에 오류가 발생했습니다.");
-      }
+  const testFunc = async (e) => {
+    e.preventDefault()
+    if (!localStorage.getItem("uuid")) {
+        alert("로그인이 필요한 서비스입니다.");
+        return;
     }
-  };
+    if(submitMode === 1) {
+        try{
+            const postOptions = [];
+            const form = document.getElementsByName("optionForm")[0].getElementsByTagName("select");
+            for(let i=0; i<form.length; i++) {
+                if(form[i].value) {
+                    const str = form[i].value.split("_");
+                    const option = {
+                        optionGroupId: data.optionGroups[str[0]].id,
+                        optionGroupName: data.optionGroups[str[0]].name,
+                        optionId: data.optionGroups[str[0]].options[str[1]].id,
+                        optionName: data.optionGroups[str[0]].options[str[1]].name,
+                        optionPrice: data.optionGroups[str[0]].options[str[1]].price,
+                    }
+                    postOptions.push(option);
+                }
+            }
+            const response = await axios.post(
+                link + "/carts?token=" + localStorage.getItem("uuid"),
+                {
+                    productId: data.id,
+                    productImage: data.images[0],
+                    productName: data.name,
+                    productPrice: data.price,
+                    productDiscount: data.discountRate,
+                    productQty: 1,
+                    productSeller: data.seller.name,
+                    productDelivery: data.deliveryPrice,
+                    cartOption: [...postOptions],
+                }
+            );
+            console.log(response);
+            console.log(postOptions);
+            alert("상품을 장바구니에 추가했습니다.");
+        } catch(error) {
+            alert("상품을 장바구니에 담는 중에 오류가 발생했습니다.");
+        }
+    }
+  }
+  
 
   const [searchParams] = useSearchParams();
   useEffect(() => {

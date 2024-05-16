@@ -8,7 +8,13 @@ const MainNavBar = () => {
 
     const myBoxToggle = () => {
         document.addEventListener("click", (e) => {
-            if(e.target.id === "myBoxButton") setMyBox(true);
+            if(e.target.id === "myBoxButton") {
+                if (localStorage.getItem("uuid")) {
+                    setMyBox(true);
+                } else {
+                    alert("로그인이 필요한 서비스입니다.")
+                }
+            }
             else setMyBox(false);
         });
     }
