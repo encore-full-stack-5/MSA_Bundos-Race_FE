@@ -13,12 +13,11 @@ import MyCart from "./pages/MyCart";
 import MyOrder from "./pages/MyOrder";
 import MyReview from "./pages/MyReview";
 import Login from "./pages/Login";
-<<<<<<< HEAD
 import Payment from "./pages/Payment";
-=======
 import CanWriteReview from "./pages/CanWriteReview";
 import ReviewWrite from "./pages/ReviewWrite";
->>>>>>> fd4061b007a617cc626f162383288fdecfcea531
+import CanWriteReview from "./pages/CanWriteReview";
+import ReviewWrite from "./pages/ReviewWrite";
 
 const router = createBrowserRouter([
   {
@@ -27,22 +26,15 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <Home /> },
       { path: "/home", element: <Home /> },
-<<<<<<< HEAD
       { path: "/login", element: <Login /> },
-=======
->>>>>>> fd4061b007a617cc626f162383288fdecfcea531
-      { path: "/search/category/*", element: <ProductSearch /> },
-      { path: "/products/*", element: <ProductDetail /> },
+      { path: "/search/*", element: <ProductSearch /> },
       { path: "/my/cart", element: <MyCart /> },
       { path: "/my/orders", element: <MyOrder /> },
-<<<<<<< HEAD
       { path: "/orders", element: <Payment /> },
-      { path: "/my/review", element: <MyReview /> },
-=======
+      { path: "/products/*", element: <ProductDetail /> },
       { path: "/my/review", element: <MyReview /> },
       { path: "/my/writable-review", element: <CanWriteReview /> },
       { path: "/review-write", element: <ReviewWrite /> },
->>>>>>> fd4061b007a617cc626f162383288fdecfcea531
       { path: "/1", element: <Test1 /> },
       { path: "/2", element: <Test2 /> },
     ],

@@ -72,18 +72,7 @@ const MyCart = () => {
     }
     const TotalPrice = () => {
         let total = 0;
-<<<<<<< HEAD
-        data.forEach(e => {
-            total += e.productPrice - Math.round(e.productPrice * e.productDiscount/100) + e.productDelivery;
-            e.productOptions?.forEach(ee => {
-                total += ee.optionPrice;
-            })
-        });
-        return (
-            <div className="pl-4 text-3xl font-bold">
-                {total + "원"}
-            </div>
-=======
+
         let checkNum = 0;
         data.forEach((e, i) => {
             if (checked[i]) {
@@ -103,7 +92,6 @@ const MyCart = () => {
                     {total + "원"}
                 </div>
             </>
->>>>>>> fd4061b007a617cc626f162383288fdecfcea531
         );
     }
 
@@ -154,18 +142,6 @@ const MyCart = () => {
 
             <div className="h-20"></div>
             <div style={{paddingRight:"13vw"}} className="fixed bottom-0 left-0 w-full h-20 bg-black flex flex-row justify-end text-white items-center">
-<<<<<<< HEAD
-                <div className="text-lg">
-                    총 <span className="font-bold">{data ? data.length : 0}건</span> 주문금액
-                </div>
-                <TotalPrice />
-                <div onClick={addOrderAll} className="ml-9 rounded-lg text-black px-16 py-3 font-bold cursor-pointer" style={{backgroundColor:"#00c63a"}}>
-                    주문하기
-                </div>
-            </div>
-            
-            {document.body.scrollHeight > document.body.clientHeight && (<TopButton bottom={"100px"}/>)}
-=======
                 {/* <div className="text-lg">
                     총 <span className="font-bold">{data ? data.length : 0}건</span> 주문금액
                 </div> */}
@@ -177,7 +153,6 @@ const MyCart = () => {
             
             {/* {document.body.scrollHeight > document.body.clientHeight && (<TopButton bottom={"100px"}/>)} */}
             <TopButton bottom={"100px"}/>
->>>>>>> fd4061b007a617cc626f162383288fdecfcea531
         </div>
     )
 }
