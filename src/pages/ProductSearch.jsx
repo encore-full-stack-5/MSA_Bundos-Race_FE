@@ -92,6 +92,7 @@ const ProductSearch = () => {
         const afterOrder = document.getElementById("order"+n);
         afterOrder.style.color = "black"
     }
+
     const changeBrandFilter = (n) => {
         if (brandFilter != null){
             const beforeBrand = document.getElementById("brand"+brandFilter);
@@ -106,16 +107,8 @@ const ProductSearch = () => {
             afterBrand.style.color = "black"
             afterBrand.style.fontWeight = 600;
         }
-        changeOrder(1);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
-    useEffect(() => {
-        getData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[orderBy, brandFilter, page])
         setPage(1);
     }
-
     const PageSelect = () => {
         let list = [];
 
@@ -241,7 +234,7 @@ const ProductSearch = () => {
                             <div key={i}>
                                 <SearchProductItem 
                                     img={e.image}
-                                    link={"/products?id=" + e.productId}
+                                    link={e.productId ? "/products?id=" + e.productId : "/products?id="+e.id}
                                     name={e.productName||e.name}
                                     price={e.price}
                                     discount={e.discountRate}

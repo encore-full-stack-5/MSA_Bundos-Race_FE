@@ -148,38 +148,44 @@ const ProductDetail = (req, res) => {
         } catch(error) {
             alert("상품을 장바구니에 담는 중에 오류가 발생했습니다.");
         }
-        // searchParams.getAll("options").forEach(e => {
-        //     const str = e.split("_");
-        //     const option = {
-        //         optionGroupId: data.optionGroups[str[0]].id,
-        //         optionGroupName: data.optionGroups[str[0]].name,
-        //         optionId: data.optionGroups[str[0]].options[str[1]].id,
-        //         optionName: data.optionGroups[str[0]].options[str[1]].name,
-        //         optionPrice: data.optionGroups[str[0]].options[str[1]].price,
-        //     }
-        //     postOptions.push(option);
-        // });
-        const response = await axios.post(
-          link + "/carts?token=" + localStorage.getItem("uuid"),
-          {
-            productId: data.id,
-            productImage: data.images[0],
-            productName: data.name,
-            productPrice: data.price,
-            productDiscount: data.discountRate,
-            productQty: 1,
-            productSeller: data.seller.name,
-            productDelivery: data.deliveryPrice,
-            cartOption: [...postOptions],
-          }
-        );
-        console.log(postOptions);
-        alert("상품을 장바구니에 추가했습니다.");
-      } catch (error) {
-        alert("상품을 장바구니에 담는 중에 오류가 발생했습니다.");
+      } else if (submitMode === 2) {
+        try{
+            const postOptions = [];
+            const form = document.getElementsByName("optionForm")[0].getElementsByTagName("select");
+            for(let i=0; i<form.length; i++) {
+                if(form[i].value) {
+                    const str = form[i].value.split("_");
+                    const option = {
+                        optionGroupId: data.optionGroups[str[0]].id,
+                        optionGroupName: data.optionGroups[str[0]].name,
+                        optionId: data.optionGroups[str[0]].options[str[1]].id,
+                        optionName: data.optionGroups[str[0]].options[str[1]].name,
+                        optionPrice: data.optionGroups[str[0]].options[str[1]].price,
+                    }
+                    postOptions.push(option);
+                }
+            }
+            const response = await axios.post(
+                link + "/carts?token=" + localStorage.getItem("uuid"),
+                {
+                    productId: data.id,
+                    productImage: data.images[0],
+                    productName: data.name,
+                    productPrice: data.price,
+                    productDiscount: data.discountRate,
+                    productQty: 1,
+                    productSeller: data.seller.name,
+                    productDelivery: data.deliveryPrice,
+                    cartOption: [...postOptions],
+                }
+            );
+            console.log(response);
+            console.log(postOptions);
+        } catch(error) {
+            alert("상품을 주문하는 중에 오류가 발생했습니다.");
+        }
       }
     }
-  }
 
   const [searchParams] = useSearchParams();
   useEffect(() => {
