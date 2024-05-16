@@ -72,6 +72,7 @@ const MyCart = () => {
     }
     const TotalPrice = () => {
         let total = 0;
+
         let checkNum = 0;
         data.forEach((e, i) => {
             if (checked[i]) {
