@@ -5,12 +5,12 @@ import MainNavBar from './components/MainNavBar';
 function App() {
   return (
     <>
-    <header>
-      <MainNavBar />
-    </header>
-    <main style={{height:"calc(100dvh - 100px)"}}>
-      <Outlet />
-    </main>
+      <header>
+        <MainNavBar />
+      </header>
+      <main style={{height:"calc(100dvh - 100px)"}}>
+        <Outlet />
+      </main>
     </>
   );
 }
