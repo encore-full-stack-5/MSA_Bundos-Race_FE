@@ -20,14 +20,26 @@ const MainNavBar = () => {
 
     const login = () => {
         window.location.href = 
+<<<<<<< HEAD
             "http://211.198.134.9:5173/signin?redirect="
             + window.location.origin
             + "/login?redirect="
             + window.location.pathname;
+=======
+            "http://192.168.0.12:5173/signin?redirect="
+            + window.location.origin
+            + "/login?redirect="
+            + window.location.pathname
+            + window.location.search;
+>>>>>>> fd4061b007a617cc626f162383288fdecfcea531
     }
     const logout = () => {
         localStorage.removeItem("uuid");
         alert("로그아웃 되었습니다.");
+<<<<<<< HEAD
+=======
+        // if() navigate("/home");
+>>>>>>> fd4061b007a617cc626f162383288fdecfcea531
         window.location.reload();
     }
 
@@ -57,8 +69,13 @@ const MainNavBar = () => {
                         style={{paddingLeft:"12vw", paddingRight:"12vw", marginLeft:"1vw", marginRight:"1vw", flex: "0.35"}}
                         className="flex flex-row justify-between items-center border-b border-opacity-30 border-gray-500"
                     >
+<<<<<<< HEAD
                         {/* <Link to={"/1"}> */}
                         <div className="font-extrabold" onClick={() => {window.open("http://www.naver.com")}}>
+=======
+                        <Link to={"http://192.168.0.16:3001/"}>
+                        <div className="font-extrabold">{/*onClick={() => {window.open("http://www.naver.com")}}>*/}
+>>>>>>> fd4061b007a617cc626f162383288fdecfcea531
                             NAVER
                         </div>
                         {/* </Link> */}

@@ -10,6 +10,7 @@ import { useRecoilValue } from "recoil";
 import { address } from "../store/address";
 
 const ProductDetail = (req, res) => {
+<<<<<<< HEAD
   const testReviewArr = [
     {
       id: 1,
@@ -106,6 +107,13 @@ const ProductDetail = (req, res) => {
 
   const [ReviewOrder, setReviewOrder] = useState("0");
   const [ReviewPopup, setReviewPopup] = useState("0");
+=======
+  const [reviewInfo, setReviewInfo] = useState([]); //여기서 data가 들어오면 알아서 들어옴
+  const [ReviewOrder, setReviewOrder] = useState("0");
+  const [ReviewPopup, setReviewPopup] = useState("0");
+  const [sumPrice, setSumPrice] = useState(0);
+  const [submitMode, setSubmitMode] = useState();
+>>>>>>> fd4061b007a617cc626f162383288fdecfcea531
   const [data, setData] = useState();
   const link = useRecoilValue(address);
   const navigate = useNavigate();
@@ -116,11 +124,34 @@ const ProductDetail = (req, res) => {
       );
       console.log(response.data);
       setData(response.data);
+<<<<<<< HEAD
+=======
+      updatePrice(
+        (response.data.price * (100 - response.data.discountRate)) / 100
+      );
+>>>>>>> fd4061b007a617cc626f162383288fdecfcea531
     } catch (error) {
       alert("상품 정보를 불러오는 중에 오류가 발생했습니다.");
     }
   };
 
+<<<<<<< HEAD
+=======
+  const fetchReview = async () => {
+    const id = searchParams.get("id");
+    try {
+      const response = await axios.get(
+        `http://localhost:8081/api/v1/reviews/${id}`
+      );
+      console.log(id);
+      console.log(response.data);
+      setReviewInfo(response.data); // 응답값 안에 데이터가 들어옴/어떻게 꺼낼지는 디버거로 확인
+    } catch (error) {
+      console.error("리뷰 못 가져온다:", error);
+    }
+  };
+
+>>>>>>> fd4061b007a617cc626f162383288fdecfcea531
   const ChangeReivewOrder = (n) => {
     const beforeElement = document.getElementById("reviewOrder" + ReviewOrder);
     beforeElement.style.color = "rgb(209 213 219)";
@@ -129,6 +160,7 @@ const ProductDetail = (req, res) => {
     afterElement.style.color = "black";
   };
   const SetReviewSmallComponent = (props) => {
+<<<<<<< HEAD
     if (testReviewArr.length > props.n) {
       return (
         <ReviewSmallBox
@@ -137,6 +169,16 @@ const ProductDetail = (req, res) => {
           name={testReviewArr[props.n].name}
           date={testReviewArr[props.n].date}
           content={testReviewArr[props.n].content}
+=======
+    if (reviewInfo.length > props.n) {
+      return (
+        <ReviewSmallBox
+          id={reviewInfo[props.n].id}
+          rating={reviewInfo[props.n].point}
+          name={reviewInfo[props.n].username}
+          date={reviewInfo[props.n].date}
+          content={reviewInfo[props.n].content}
+>>>>>>> fd4061b007a617cc626f162383288fdecfcea531
           onClick={setReviewPopup}
         />
       );
@@ -147,11 +189,19 @@ const ProductDetail = (req, res) => {
     return (
       <ReviewFullBox
         id={props.review.id}
+<<<<<<< HEAD
         rating={props.review.rating}
         name={props.review.name}
         date={props.review.date}
         content={props.review.content}
         options={props.review.options}
+=======
+        rating={props.review.point}
+        name={props.review.username}
+        date={"2024-01-01"}
+        content={props.review.content}
+        options={["옵션1", "옵션2"]}
+>>>>>>> fd4061b007a617cc626f162383288fdecfcea531
         onClick={setReviewPopup}
       />
     );
@@ -163,6 +213,7 @@ const ProductDetail = (req, res) => {
     return "";
   };
 
+<<<<<<< HEAD
   const SumPrice = () => {
     let sumPrice = (data.price * (100 - data.discountRate)) / 100;
 
@@ -186,6 +237,48 @@ const ProductDetail = (req, res) => {
                     }
                     postOptions.push(option);
                 });
+=======
+  const updatePrice = (e = 0) => {
+    let sum = e;
+    if (data) {
+      sum = (data.price * (100 - data.discountRate)) / 100;
+      const form = document
+        .getElementsByName("optionForm")[0]
+        .getElementsByTagName("select");
+      for (let i = 0; i < form.length; i++) {
+        if (form[i].value) {
+          const optionCode = form[i].value.split("_");
+          sum += data.optionGroups[optionCode[0]].options[optionCode[1]].price;
+        }
+      }
+    }
+    setSumPrice(Math.round(sum));
+  };
+
+    const testFunc = async (e) => {
+        e.preventDefault()
+        if (!localStorage.getItem("uuid")) {
+            alert("로그인이 필요한 서비스입니다.");
+            return;
+        }
+        if(submitMode === 1) {
+            try{
+                const postOptions = [];
+                const form = document.getElementsByName("optionForm")[0].getElementsByTagName("select");
+                for(let i=0; i<form.length; i++) {
+                    if(form[i].value) {
+                        const str = form[i].value.split("_");
+                        const option = {
+                            optionGroupId: data.optionGroups[str[0]].id,
+                            optionGroupName: data.optionGroups[str[0]].name,
+                            optionId: data.optionGroups[str[0]].options[str[1]].id,
+                            optionName: data.optionGroups[str[0]].options[str[1]].name,
+                            optionPrice: data.optionGroups[str[0]].options[str[1]].price,
+                        }
+                        postOptions.push(option);
+                    }
+                }
+>>>>>>> fd4061b007a617cc626f162383288fdecfcea531
                 const response = await axios.post(
                     link + "/carts?token=" + localStorage.getItem("uuid"),
                     {
@@ -200,6 +293,7 @@ const ProductDetail = (req, res) => {
                         cartOption: [...postOptions],
                     }
                 );
+<<<<<<< HEAD
                 console.log(response.data[0]);
             } catch(error) {
                 alert("상품을 장바구니에 담는 중에 오류가 발생했습니다.")
@@ -231,6 +325,52 @@ const ProductDetail = (req, res) => {
   useEffect(() => {
     getData();
     // ChangeReivewOrder(0);
+=======
+                console.log(response);
+                console.log(postOptions);
+                alert("상품을 장바구니에 추가했습니다.");
+            } catch(error) {
+                alert("상품을 장바구니에 담는 중에 오류가 발생했습니다.")
+            }
+        }
+        // searchParams.getAll("options").forEach(e => {
+        //     const str = e.split("_");
+        //     const option = {
+        //         optionGroupId: data.optionGroups[str[0]].id,
+        //         optionGroupName: data.optionGroups[str[0]].name,
+        //         optionId: data.optionGroups[str[0]].options[str[1]].id,
+        //         optionName: data.optionGroups[str[0]].options[str[1]].name,
+        //         optionPrice: data.optionGroups[str[0]].options[str[1]].price,
+        //     }
+        //     postOptions.push(option);
+        // });
+        const response = await axios.post(
+          link + "/carts?token=" + localStorage.getItem("uuid"),
+          {
+            productId: data.id,
+            productImage: data.images[0],
+            productName: data.name,
+            productPrice: data.price,
+            productDiscount: data.discountRate,
+            productQty: 1,
+            productSeller: data.seller.name,
+            productDelivery: data.deliveryPrice,
+            cartOption: [...postOptions],
+          }
+        );
+        console.log(postOptions);
+        alert("상품을 장바구니에 추가했습니다.");
+      } catch (error) {
+        alert("상품을 장바구니에 담는 중에 오류가 발생했습니다.");
+      }
+    }
+  };
+
+  const [searchParams] = useSearchParams();
+  useEffect(() => {
+    getData();
+    fetchReview();
+>>>>>>> fd4061b007a617cc626f162383288fdecfcea531
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -266,7 +406,14 @@ const ProductDetail = (req, res) => {
                     </div>
                   </div>
 
+<<<<<<< HEAD
                   <div className="flex flex-col justify-start flex-1">
+=======
+                  <div
+                    className="flex flex-col justify-start flex-1"
+                    style={{ maxWidth: "50%" }}
+                  >
+>>>>>>> fd4061b007a617cc626f162383288fdecfcea531
                     <div className="p-6">
                       <div className="font-bold text-lg">{data.name}</div>
                       <div className="mt-4 mb-4 flex flex-row justify-between items-center">
@@ -279,14 +426,24 @@ const ProductDetail = (req, res) => {
                           </div>
                           <div className="text-2xl">
                             {data.discountRate > 0
+<<<<<<< HEAD
                               ? (data.price * (100 - data.discountRate)) / 100 +
                                 "원"
+=======
+                              ? Math.round(
+                                  (data.price * (100 - data.discountRate)) / 100
+                                ) + "원"
+>>>>>>> fd4061b007a617cc626f162383288fdecfcea531
                               : data.price + "원"}
                           </div>
                         </div>
                       </div>
                       <hr />
+<<<<<<< HEAD
                       <form onSubmit={(e) => submitCheckLogin(e)} method="get">
+=======
+                      <form name="optionForm" onSubmit={(e) => testFunc(e)}>
+>>>>>>> fd4061b007a617cc626f162383288fdecfcea531
                         <div className="flex flex-col my-5 gap-2">
                           {data.optionGroups.map((e, i) => (
                             <ProductOptionGroup
@@ -294,18 +451,32 @@ const ProductDetail = (req, res) => {
                               name={e.name}
                               options={e.options}
                               require={e.necessary}
+<<<<<<< HEAD
+=======
+                              onChange={updatePrice}
+>>>>>>> fd4061b007a617cc626f162383288fdecfcea531
                             />
                           ))}
                         </div>
                         <hr />
                         <div className="flex flex-row items-center my-5 justify-between">
                           <div className="text-sm font-bold">총 상품 금액</div>
+<<<<<<< HEAD
                           <SumPrice />
+=======
+                          <div className="text-red-600 text-2xl font-bold">
+                            {sumPrice + "원"}
+                          </div>
+>>>>>>> fd4061b007a617cc626f162383288fdecfcea531
                         </div>
                         <div className="flex flex-row gap-2">
                           <input
                             type="submit"
                             name="action"
+<<<<<<< HEAD
+=======
+                            onClick={() => setSubmitMode(1)}
+>>>>>>> fd4061b007a617cc626f162383288fdecfcea531
                             className="flex-1 rounded-e rounded-s border border-gray-400 text-center py-2 cursor-pointer"
                             style={{ fontSize: "11pt", fontWeight: "600" }}
                             value={"장바구니"}
@@ -313,6 +484,10 @@ const ProductDetail = (req, res) => {
                           <input
                             type="submit"
                             name="action"
+<<<<<<< HEAD
+=======
+                            onClick={() => setSubmitMode(2)}
+>>>>>>> fd4061b007a617cc626f162383288fdecfcea531
                             className="flex-1 rounded-e rounded-s border border-gray-400 text-center py-2 cursor-pointer"
                             style={{
                               fontSize: "11pt",
@@ -381,8 +556,14 @@ const ProductDetail = (req, res) => {
                 className="flex flex-row justify-between my-3 pt-4"
               >
                 <div className="font-bold text-xl">
+<<<<<<< HEAD
                   {"리뷰 " + testReviewArr.length + "건"}
                 </div>
+=======
+                  {"리뷰 " + reviewInfo.length + "건"}
+                </div>
+
+>>>>>>> fd4061b007a617cc626f162383288fdecfcea531
                 <div className="flex flex-row items-center">
                   <div
                     id="reviewOrder0"
@@ -443,8 +624,13 @@ const ProductDetail = (req, res) => {
                         </div> */}
               </>
               <div className="flex flex-col">
+<<<<<<< HEAD
                 {testReviewArr.map((e) => (
                   <SetReviewFullComponent review={e} />
+=======
+                {reviewInfo.map((review) => (
+                  <SetReviewFullComponent review={review} />
+>>>>>>> fd4061b007a617cc626f162383288fdecfcea531
                 ))}
               </div>
             </div>

@@ -25,7 +25,6 @@ const productData = {
   ],
   totalPrice: 23000,
   amount: 10,
-  deliveryMemo: "문 앞에 놓고 가주세요~~",
 };
 
 const PaymentComponent = () => {
@@ -144,9 +143,11 @@ const PaymentComponent = () => {
           </div>
         </div>
       </div>
-      <div className="w-4/12 m-7">
-        <div>asdajsdhajhdfjahsjdhasdhjasdjashdjashd</div>
-      </div>
+      {/* <div className="w-4/12 m-7">
+        <div>
+          <Card />
+        </div>
+      </div> */}
     </div>
   );
 };
