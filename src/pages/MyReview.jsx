@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react"; // useEffect 추가
 import RatingToStar from "../atom/RatingToStar";
 import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { address } from "../store/address";
 
 const MyReview = () => {
   // 상품 정보를 담을 state
   const [reviewInfo, setReviewInfo] = useState(); //여기서 data가 들어오면 알아서 들어옴
-  const userId = "testid";
+  const link = useRecoilValue(address);
   const dummyUpdateRequset = {
     point: 4,
     content: "변경테스트",
@@ -17,7 +19,10 @@ const MyReview = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8081/api/v1/reviews/user/${userId}`
+        `${link}/reviews/my/written-reviews`,
+        {headers:{
+          "Authorization": `Bearer ${localStorage.getItem("uuid")}`
+        }}
       );
       console.log(response.data);
       setReviewInfo(response.data); // 응답값 안에 데이터가 들어옴/어떻게 꺼낼지는 디버거로 확인

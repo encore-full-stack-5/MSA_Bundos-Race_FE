@@ -4,12 +4,13 @@ import ReviewPopupBox from "../components/ReviewPopupBox";
 import ReviewFullBox from "../components/ReviewFullBox";
 import TopButton from "../components/TopButton";
 import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { useRecoilValue } from "recoil";
 import { address } from "../store/address";
 
 const ProductDetail = (req, res) => {
+  
   const [reviewInfo, setReviewInfo] = useState([]); //여기서 data가 들어오면 알아서 들어옴
   const [ReviewOrder, setReviewOrder] = useState("0");
   const [ReviewPopup, setReviewPopup] = useState("0");
@@ -17,7 +18,6 @@ const ProductDetail = (req, res) => {
   const [submitMode, setSubmitMode] = useState();
   const [data, setData] = useState();
   const link = useRecoilValue(address);
-  const navigate = useNavigate();
   const getData = async () => {
     try {
       const response = await axios.get(
@@ -37,7 +37,7 @@ const ProductDetail = (req, res) => {
     const id = searchParams.get("id");
     try {
       const response = await axios.get(
-        `http://localhost:8081/api/v1/reviews/${id}`
+        `${link}/reviews/${id}`
       );
       console.log(id);
       console.log(response.data);
@@ -105,50 +105,48 @@ const ProductDetail = (req, res) => {
     }
     setSumPrice(Math.round(sum));
   };
-
-    const testFunc = async (e) => {
-        e.preventDefault()
-        if (!localStorage.getItem("uuid")) {
-            alert("로그인이 필요한 서비스입니다.");
-            return;
-        }
-        if(submitMode === 1) {
-            try{
-                const postOptions = [];
-                const form = document.getElementsByName("optionForm")[0].getElementsByTagName("select");
-                for(let i=0; i<form.length; i++) {
-                    if(form[i].value) {
-                        const str = form[i].value.split("_");
-                        const option = {
-                            optionGroupId: data.optionGroups[str[0]].id,
-                            optionGroupName: data.optionGroups[str[0]].name,
-                            optionId: data.optionGroups[str[0]].options[str[1]].id,
-                            optionName: data.optionGroups[str[0]].options[str[1]].name,
-                            optionPrice: data.optionGroups[str[0]].options[str[1]].price,
-                        }
-                        postOptions.push(option);
+  const testFunc = async (e) => {
+    e.preventDefault()
+    if (!localStorage.getItem("uuid")) {
+        alert("로그인이 필요한 서비스입니다.");
+        return;
+    }
+    if(submitMode === 1) {
+        try{
+            const postOptions = [];
+            const form = document.getElementsByName("optionForm")[0].getElementsByTagName("select");
+            for(let i=0; i<form.length; i++) {
+                if(form[i].value) {
+                    const str = form[i].value.split("_");
+                    const option = {
+                        optionGroupId: data.optionGroups[str[0]].id,
+                        optionGroupName: data.optionGroups[str[0]].name,
+                        optionId: data.optionGroups[str[0]].options[str[1]].id,
+                        optionName: data.optionGroups[str[0]].options[str[1]].name,
+                        optionPrice: data.optionGroups[str[0]].options[str[1]].price,
                     }
+                    postOptions.push(option);
                 }
-                const response = await axios.post(
-                    link + "/carts?token=" + localStorage.getItem("uuid"),
-                    {
-                        productId: data.id,
-                        productImage: data.images[0],
-                        productName: data.name,
-                        productPrice: data.price,
-                        productDiscount: data.discountRate,
-                        productQty: 1,
-                        productSeller: data.seller.name,
-                        productDelivery: data.deliveryPrice,
-                        cartOption: [...postOptions],
-                    }
-                );
-                console.log(response);
-                console.log(postOptions);
-                alert("상품을 장바구니에 추가했습니다.");
-            } catch(error) {
-                alert("상품을 장바구니에 담는 중에 오류가 발생했습니다.")
             }
+            const response = await axios.post(
+                link + "/carts?token=" + localStorage.getItem("uuid"),
+                {
+                    productId: data.id,
+                    productImage: data.images[0],
+                    productName: data.name,
+                    productPrice: data.price,
+                    productDiscount: data.discountRate,
+                    productQty: 1,
+                    productSeller: data.seller.name,
+                    productDelivery: data.deliveryPrice,
+                    cartOption: [...postOptions],
+                }
+            );
+            console.log(response);
+            console.log(postOptions);
+            alert("상품을 장바구니에 추가했습니다.");
+        } catch(error) {
+            alert("상품을 장바구니에 담는 중에 오류가 발생했습니다.");
         }
         // searchParams.getAll("options").forEach(e => {
         //     const str = e.split("_");
@@ -181,7 +179,7 @@ const ProductDetail = (req, res) => {
         alert("상품을 장바구니에 담는 중에 오류가 발생했습니다.");
       }
     }
-  };
+  }
 
   const [searchParams] = useSearchParams();
   useEffect(() => {
@@ -201,8 +199,13 @@ const ProductDetail = (req, res) => {
             ""
           ) : (
             <div className="flex flex-col">
+              <Link to={"/search?category="+data.category.id}>
+              <div className='pt-3 text-lg font-bold tracking-wider cursor-pointer'>
+                  {data.category.name}
+              </div>
+              </Link>
               <div id="upperBox">
-                <div className="border border-gray-300 mt-5 mb-5 flex flex-row">
+                <div className="border border-gray-300 mt-3 mb-5 flex flex-row">
                   <div className="flex flex-col justify-start flex-1 border-r border-gray-300">
                     <img
                       src={data.images[0]}
@@ -221,7 +224,6 @@ const ProductDetail = (req, res) => {
                       ))}
                     </div>
                   </div>
-
                   <div
                     className="flex flex-col justify-start flex-1"
                     style={{ maxWidth: "50%" }}
@@ -323,7 +325,7 @@ const ProductDetail = (req, res) => {
                     상세정보
                   </div>
                   <div className="flex-1 py-2.5 bg-gray-100 text-gray-600 cursor-pointer">
-                    {"리뷰 4"}
+                    {"리뷰"+reviewInfo.length}
                   </div>
                   <div className="flex-1 py-2.5 bg-gray-100 text-gray-300">
                     Q&A
@@ -348,7 +350,6 @@ const ProductDetail = (req, res) => {
                 <div className="font-bold text-xl">
                   {"리뷰 " + reviewInfo.length + "건"}
                 </div>
-
                 <div className="flex flex-row items-center">
                   <div
                     id="reviewOrder0"
