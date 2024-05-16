@@ -9,6 +9,7 @@ const Home = () => {
                     기획 배너
                 </div>
                 <div className="w-auto h-52 mt-5 rounded-xl bg-white grid grid-flow-row grid-cols-8 place-content-around place-items-center">
+
                     <HomeCategoryBox name="여성패션" link="/search?category=1" img="https://shop-phinf.pstatic.net/20240306_23/1709702705688NAHTk_PNG/EC97ACEC84B1ED8CA8EC8598.png?type=f305_305"/>
                     <HomeCategoryBox name="남성패션" link="/search?category=2" img="https://shop-phinf.pstatic.net/20240306_252/1709702719989DXRdL_PNG/EB82A8EC84B1ED8CA8EC8598.png?type=f305_305"/>
                     <HomeCategoryBox name="디지털" link="/search?category=3" img="https://shop-phinf.pstatic.net/20230713_206/1689225454235nao23_PNG/E18483E185B5E1848CE185B5E18490E185A5E186AF_156x156%2B1.png?type=f305_305"/>

@@ -10,6 +10,7 @@ import { useRecoilValue } from "recoil";
 import { address } from "../store/address";
 
 const ProductDetail = (req, res) => {
+
   const [reviewInfo, setReviewInfo] = useState([]); //여기서 data가 들어오면 알아서 들어옴
   const [ReviewOrder, setReviewOrder] = useState("0");
   const [ReviewPopup, setReviewPopup] = useState("0");
@@ -17,7 +18,6 @@ const ProductDetail = (req, res) => {
   const [submitMode, setSubmitMode] = useState();
   const [data, setData] = useState();
   const link = useRecoilValue(address);
-  
   const getData = async () => {
     try {
       const response = await axios.get(
@@ -32,6 +32,7 @@ const ProductDetail = (req, res) => {
       alert("상품 정보를 불러오는 중에 오류가 발생했습니다.");
     }
   };
+
 
   const fetchReview = async () => {
     const id = searchParams.get("id");
@@ -105,7 +106,6 @@ const ProductDetail = (req, res) => {
     }
     setSumPrice(Math.round(sum));
   };
-
   const testFunc = async (e) => {
     e.preventDefault()
     if (!localStorage.getItem("uuid")) {
@@ -151,7 +151,6 @@ const ProductDetail = (req, res) => {
         }
     }
   }
-  
 
   const [searchParams] = useSearchParams();
   useEffect(() => {
@@ -196,7 +195,6 @@ const ProductDetail = (req, res) => {
                       ))}
                     </div>
                   </div>
-
                   <div
                     className="flex flex-col justify-start flex-1"
                     style={{ maxWidth: "50%" }}
@@ -212,7 +210,7 @@ const ProductDetail = (req, res) => {
                             {data.discountRate > 0 ? data.price + "원" : ""}
                           </div>
                           <div className="text-2xl">
-                            {data.discountRate > 0
+                            {data.discountRate > 0\
                               ? Math.round(
                                   (data.price * (100 - data.discountRate)) / 100
                                 ) + "원"
@@ -323,7 +321,6 @@ const ProductDetail = (req, res) => {
                 <div className="font-bold text-xl">
                   {"리뷰 " + reviewInfo.length + "건"}
                 </div>
-
                 <div className="flex flex-row items-center">
                   <div
                     id="reviewOrder0"

@@ -13,6 +13,9 @@ import MyCart from "./pages/MyCart";
 import MyOrder from "./pages/MyOrder";
 import MyReview from "./pages/MyReview";
 import Login from "./pages/Login";
+import Payment from "./pages/Payment";
+import CanWriteReview from "./pages/CanWriteReview";
+import ReviewWrite from "./pages/ReviewWrite";
 import CanWriteReview from "./pages/CanWriteReview";
 import ReviewWrite from "./pages/ReviewWrite";
 
@@ -23,11 +26,12 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <Home /> },
       { path: "/home", element: <Home /> },
-      { path: "/login", element: <Login />},
+      { path: "/login", element: <Login /> },
       { path: "/search/*", element: <ProductSearch /> },
-      { path: "/products/*", element: <ProductDetail /> },
       { path: "/my/cart", element: <MyCart /> },
       { path: "/my/orders", element: <MyOrder /> },
+      { path: "/orders", element: <Payment /> },
+      { path: "/products/*", element: <ProductDetail /> },
       { path: "/my/review", element: <MyReview /> },
       { path: "/my/writable-review", element: <CanWriteReview /> },
       { path: "/review-write", element: <ReviewWrite /> },

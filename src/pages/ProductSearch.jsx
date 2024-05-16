@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from "react-router-dom"
 import SearchProductItem from '../components/SearchProductItem'
 import TopButton from '../components/TopButton'
 import axios from "axios";
@@ -19,6 +20,7 @@ const ProductSearch = () => {
     const getData = async () => {
         try {
             const params = {
+
                 categoryId:searchParams.get("category")
             };
             if (document.getElementById("minPrice").value !== "") params.startPrice = document.getElementById("minPrice").value; 
@@ -104,6 +106,13 @@ const ProductSearch = () => {
             afterBrand.style.color = "black"
             afterBrand.style.fontWeight = 600;
         }
+        changeOrder(1);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
+    useEffect(() => {
+        getData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[orderBy, brandFilter, page])
         setPage(1);
     }
 
