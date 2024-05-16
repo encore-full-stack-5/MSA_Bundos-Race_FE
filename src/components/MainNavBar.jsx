@@ -46,6 +46,15 @@ const MainNavBar = () => {
             alert("로그인이 필요한 서비스입니다.");
     }
 
+    const submitSearch = (e) => {
+        console.log(e)
+        if (e.key === "Enter" || e.target.id === "search-btn"){
+            const input = document.getElementById("search-input").value.trim();
+            if (input != "") 
+                navigate("/search?q=" + input);
+        }
+    }
+
     useEffect(() => {
         myBoxToggle();
     },[]);
@@ -97,15 +106,11 @@ const MainNavBar = () => {
                             </svg>
                             </Link>
                             <div className="flex flex-row items-center">
-                                <input style={{minWidth:"260px", height:"32px"}}/>
-                                <Link to={"/search/category/"}>
-                                <svg width="50" height="34" viewBox="0 0 50 34" fill="none" class="_searchInput_icon_DaIWa">
-                                    <path fill="#00C73C" stroke="#00A030" d="M.5.5h49v33H.5z"></path><g filter="url(#IconMagnifierBox50x34Green_svg__filter0_d_4_5922)" stroke="#fff" stroke-width="2"><path d="M28 20l6 5"></path><circle cx="23.5" cy="15.5" r="6.5"></circle></g><defs><filter id="IconMagnifierBox50x34Green_svg__filter0_d_4_5922" x="14" y="6" width="22.64" height="21.768" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood><feColorMatrix in="SourceAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix><feOffset></feOffset><feGaussianBlur stdDeviation="1"></feGaussianBlur><feComposite in2="hardAlpha" operator="out"></feComposite><feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0"></feColorMatrix><feBlend in2="BackgroundImageFix" result="effect1_dropShadow_4_5922"></feBlend><feBlend in="SourceGraphic" in2="effect1_dropShadow_4_5922" result="shape"></feBlend></filter></defs>
+                                <input id="search-input" className="text-black font-normal text-base pl-1 outline-none" onKeyUp={(e) => submitSearch(e)} style={{minWidth:"260px", height:"32px"}}/>
+                                <svg onClick={(e) => submitSearch(e)} id="search-btn" width="50" height="34" viewBox="0 0 50 34" fill="none">
+                                    <path fill="#00C73C" stroke="#00A030" d="M.5.5h49v33H.5z"></path><g stroke="#fff" stroke-width="2"><path d="M28 20l6 5"></path><circle cx="23.5" cy="15.5" r="6.5"></circle></g>
                                 </svg>
-                                </Link>
-                                <Link to={"/search/category/"}>
-                                <div className="pl-2 text-sm">검색</div>
-                                </Link>
+                                <div className="pl-2 text-sm cursor-default">검색</div>
                             </div>
                         </div>
                         <div className="flex flex-row gap-1 relative">

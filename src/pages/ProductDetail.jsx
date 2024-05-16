@@ -4,7 +4,7 @@ import ReviewPopupBox from "../components/ReviewPopupBox";
 import ReviewFullBox from "../components/ReviewFullBox";
 import TopButton from "../components/TopButton";
 import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { useRecoilValue } from "recoil";
 import { address } from "../store/address";
@@ -17,7 +17,7 @@ const ProductDetail = (req, res) => {
   const [submitMode, setSubmitMode] = useState();
   const [data, setData] = useState();
   const link = useRecoilValue(address);
-  const navigate = useNavigate();
+  
   const getData = async () => {
     try {
       const response = await axios.get(
@@ -171,8 +171,13 @@ const ProductDetail = (req, res) => {
             ""
           ) : (
             <div className="flex flex-col">
+              <Link to={"/search?category="+data.category.id}>
+              <div className='pt-3 text-lg font-bold tracking-wider cursor-pointer'>
+                  {data.category.name}
+              </div>
+              </Link>
               <div id="upperBox">
-                <div className="border border-gray-300 mt-5 mb-5 flex flex-row">
+                <div className="border border-gray-300 mt-3 mb-5 flex flex-row">
                   <div className="flex flex-col justify-start flex-1 border-r border-gray-300">
                     <img
                       src={data.images[0]}
@@ -293,7 +298,7 @@ const ProductDetail = (req, res) => {
                     상세정보
                   </div>
                   <div className="flex-1 py-2.5 bg-gray-100 text-gray-600 cursor-pointer">
-                    {"리뷰 4"}
+                    {"리뷰"+reviewInfo.length}
                   </div>
                   <div className="flex-1 py-2.5 bg-gray-100 text-gray-300">
                     Q&A

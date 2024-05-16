@@ -7,6 +7,7 @@ import { address } from '../store/address';
 import { useSearchParams  } from "react-router-dom"
 
 const ProductSearch = () => {
+    const categoryName = ["여성패션", "남성패션", "디지털", "식품", "화장품/미용", "출산/유아동", "반려동물물품", "스포츠/레저", "가구/인테리어", "자동차/공구", "컴퓨터", "가전", "생활/주방용품", "건강/의료용품", "취미/문구/악기", "친환경/인증", "면세점", "여행", "리퍼비시관", "렌탈관", "E쿠폰/티켓", "정기구독"];
     const [brandFilter, setBrandFilter] = useState(null);
     const [orderBy, setOrder] = useState(1);
     const [page, setPage] = useState(1);
@@ -18,7 +19,7 @@ const ProductSearch = () => {
     const getData = async () => {
         try {
             const params = {
-                categoryId:searchParams.get("id")
+                categoryId:searchParams.get("category")
             };
             if (document.getElementById("minPrice").value !== "") params.startPrice = document.getElementById("minPrice").value; 
             if (document.getElementById("maxPrice").value !== "") params.endPrice = document.getElementById("maxPrice").value;
@@ -59,12 +60,25 @@ const ProductSearch = () => {
     const getSellerData = async () => {
         try{
             const response = await axios.get(
-                link + "/sellers/category/" + searchParams.get("id")
+                link + "/sellers/category/" + searchParams.get("category")
             );
             console.log(response.data);
             setSellers(response.data);
         } catch(error) {
             alert("판매자 정보를 불러오는 중에 오류가 발생했습니다.")
+        }
+    }
+    const getSearchData = async () => {
+        try {
+            const response = await axios.get(
+                link + "/search?keyword=" + searchParams.get("q")
+            );
+            console.log(response.data);
+            let temp;
+            temp.content = response.data;
+            setData(temp)
+        } catch(error) {
+            alert("검색 결과를 불러오는 중에 오류가 발생했습니다.")
         }
     }
 
@@ -93,9 +107,6 @@ const ProductSearch = () => {
         setPage(1);
     }
 
-    const PageNum = () => {
-
-    }
     const PageSelect = () => {
         let list = [];
 
@@ -136,13 +147,19 @@ const ProductSearch = () => {
     }
 
     useEffect(() => {
-        getSellerData();
-        setPage(1);
-        changeOrder(1);
+        if (searchParams.get("category")) {
+            getSellerData();
+            setPage(1);
+            changeOrder(1);
+        } else if (searchParams.get("q")){
+            getSearchData();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
     useEffect(() => {
-        getData();
+        if (searchParams.get("category")) {
+            getData();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[orderBy, brandFilter, page])
 
@@ -151,10 +168,10 @@ const ProductSearch = () => {
             <div 
                 style={{paddingLeft:"13vw", paddingRight:"13vw"}} 
                 className="flex flex-col">
-                <div className='pt-3 pb-3 text-sm font-bold'>
-                    {"카테고리명"}
-                </div>
-                <div>
+                {searchParams.get("category")?<div className='pt-3 pb-3 text-lg tracking-wider font-bold'>
+                    {categoryName[searchParams.get("category")-1]}
+                </div>:""}
+                {searchParams.get("category")?<div>
                     <div className="w-auto bg-white flex flex-row text-white text-sm items-center">
                         <div style={{width:"160px", height:"43px", backgroundColor:"rgb(82, 95, 120)"}}
                             className="flex items-center pl-5">
@@ -185,9 +202,9 @@ const ProductSearch = () => {
                             }}></div>
                         </div>
                     </div>
-                </div>
+                </div>:""}
                 <div>
-                    <div
+                    {searchParams.get("category")?<div
                         style={{fontSize:"10pt", color:"rgb(140,140,140)"}}
                         className="pt-5 pb-3 flex flex-row gap-3">
                         {/* <div id="order0" onClick={() => changeOrder(0)} className='cursor-pointer'>
@@ -208,7 +225,7 @@ const ProductSearch = () => {
                         <div id="order5" onClick={() => changeOrder(5)} className='cursor-pointer'>
                             · 등록일순
                         </div>
-                    </div>
+                    </div>:""}
                     <hr />
                     <div className="flex flex-col">
                         {data.content?.map((e, i) => (
@@ -216,7 +233,7 @@ const ProductSearch = () => {
                                 <SearchProductItem 
                                     img={e.image}
                                     link={"/products?id=" + e.productId}
-                                    name={e.productName}
+                                    name={e.productName||e.name}
                                     price={e.price}
                                     discount={e.discountRate}
                                     delivery={e.deliveryPrice}
