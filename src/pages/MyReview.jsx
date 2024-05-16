@@ -5,29 +5,47 @@ import axios from "axios";
 const MyReview = () => {
   // 상품 정보를 담을 state
   const [reviewInfo, setReviewInfo] = useState(); //여기서 data가 들어오면 알아서 들어옴
+  const userId = "testid";
+  const dummyUpdateRequset = {
+    point: 4,
+    content: "변경테스트",
+    images: ["change1.jpg", "change2.jpg", "change3.jpg"],
+  };
 
   // 데이터를 불러오는 함수
+
   const fetchData = async () => {
     try {
-      const response = await axios.get("리뷰 정보를 가져올 URL");
+      const response = await axios.get(
+        `http://localhost:8081/api/v1/reviews/user/${userId}`
+      );
+      console.log(response.data);
       setReviewInfo(response.data); // 응답값 안에 데이터가 들어옴/어떻게 꺼낼지는 디버거로 확인
     } catch (error) {
       console.error("리뷰 못 가져온다:", error);
     }
   };
 
-  const onClickUpdate = async () => {
+  const onClickUpdate = async (review) => {
     try {
-      const response = await axios.get("수정URL");
-      console.log(response.data);
+      console.log(review.reviewId);
+      console.log(dummyUpdateRequset);
+      const response = await axios.put(
+        `http://localhost:8081/api/v1/reviews/${review.reviewId}`,
+        dummyUpdateRequset
+      );
+      fetchData();
     } catch (error) {
       console.error("API 호출 중 오류 발생", error);
     }
   };
 
-  const onClickDelete = async () => {
+  const onClickDelete = async (review) => {
     try {
-      const response = await axios.get("수정URL");
+      const response = await axios.delete(
+        `http://localhost:8081/api/v1/reviews/my/${review.reviewId}`
+      );
+      fetchData();
       console.log(response.data);
     } catch (error) {
       console.error("API 호출 중 오류 발생", error);
@@ -72,108 +90,95 @@ const MyReview = () => {
             border: "1px solid black",
           }}
         >
-          <div
-            className="product-info"
-            style={{
-              width: "80vw",
-              height: "30vh",
-              border: "1px solid black",
-            }}
-          >
+          {reviewInfo?.map((review, index) => (
             <div
+              key={index}
+              className="product-info"
               style={{
-                width: "100%",
-                height: "50%",
+                width: "80vw",
+                height: "30vh",
                 border: "1px solid black",
-                display: "flex",
+                position: "relative", // Added relative positioning
+                marginBottom: "10px", // Added margin between reviews
               }}
             >
               <div
                 style={{
-                  width: "8%",
-                  height: "80%",
+                  width: "100%",
+                  height: "50%",
                   border: "1px solid black",
-                  marginTop: "10px",
-                  marginBottom: "10px",
-                }}
-              ></div>
-              <div
-                style={{
-                  width: "90%",
-                  marginTop: "10px",
-                  marginBottom: "10px",
-                }}
-              >
-                <a
-                  style={{
-                    display: "block",
-                  }}
-                >
-                  상품명
-                </a>
-                <a
-                  style={{
-                    display: "block",
-                    fontSize: "13px",
-                  }}
-                >
-                  판매자
-                </a>
-                <a
-                  style={{
-                    display: "block",
-                    fontSize: "13px",
-                  }}
-                >
-                  옵션
-                </a>
-              </div>
-            </div>
-            <div
-              className="review-content"
-              style={{
-                width: "80%",
-                height: "50%",
-                display: "flex",
-              }}
-            >
-              <div
-                className="point-content"
-                style={{
                   display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-around",
-                  paddingRight: "60%",
                 }}
               >
-                <RatingToStar rating="3" />
-                <a
+                <div
                   style={{
-                    fontSize: "13px",
+                    width: "8%",
+                    height: "80%",
+                    border: "1px solid black",
+                    marginTop: "10px",
+                    marginBottom: "10px",
+                  }}
+                ></div>
+                <div
+                  style={{
+                    width: "90%",
+                    marginTop: "10px",
+                    marginBottom: "10px",
                   }}
                 >
-                  내용
-                </a>
+                  <a
+                    style={{
+                      display: "block",
+                    }}
+                  >
+                    상품명
+                  </a>
+                  <a
+                    style={{
+                      display: "block",
+                      fontSize: "13px",
+                    }}
+                  >
+                    판매자
+                  </a>
+                  <a
+                    style={{
+                      display: "block",
+                      fontSize: "13px",
+                    }}
+                  >
+                    옵션
+                  </a>
+                </div>
               </div>
               <div
+                className="review-content"
                 style={{
-                  height: "100%",
-                  aspectRatio: "1 / 1",
-                  border: "1px solid black",
-                }}
-              ></div>
-              <div
-                style={{
-                  width: "20%",
-                  height: "100%",
+                  width: "80%",
+                  height: "50%",
+                  display: "flex",
                 }}
               >
+                <div
+                  className="point-content"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-around",
+                    paddingRight: "75%",
+                  }}
+                >
+                  <RatingToStar rating={review.point} />
+                  <a
+                    style={{
+                      fontSize: "13px",
+                    }}
+                  >
+                    {review.content}
+                  </a>
+                </div>
                 <button
                   style={{
-                    position: "absolute",
-                    top: "50%",
-                    right: "15%",
-                    transform: "translateY(-50%)",
                     border: "1px solid #ccc",
                     borderRadius: "4px",
                     backgroundColor: "#f0f0f0",
@@ -181,7 +186,7 @@ const MyReview = () => {
                     fontSize: "13px",
                     color: "#333",
                   }}
-                  onClick={onClickUpdate}
+                  onClick={() => onClickUpdate(review)}
                 >
                   수정하기
                 </button>
@@ -194,14 +199,29 @@ const MyReview = () => {
                     width: "16px",
                     height: "15px",
                     position: "absolute",
-                    top: "45%",
-                    right: "10%",
+                    top: "50%",
+                    right: "18%",
+                    transform: "translateY(200%)",
+                    cursor: "pointer",
                   }}
-                  onClick={onClickDelete}
+                  onClick={() => onClickDelete(review)}
+                ></div>
+                <div
+                  style={{
+                    height: "100%",
+                    aspectRatio: "1 / 1",
+                    border: "1px solid black",
+                  }}
+                ></div>
+                <div
+                  style={{
+                    width: "20%",
+                    height: "100%",
+                  }}
                 ></div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </>
