@@ -10,7 +10,7 @@ import { useRecoilValue } from "recoil";
 import { address } from "../store/address";
 
 const ProductDetail = (req, res) => {
-
+  
   const [reviewInfo, setReviewInfo] = useState([]); //여기서 data가 들어오면 알아서 들어옴
   const [ReviewOrder, setReviewOrder] = useState("0");
   const [ReviewPopup, setReviewPopup] = useState("0");
@@ -32,7 +32,6 @@ const ProductDetail = (req, res) => {
       alert("상품 정보를 불러오는 중에 오류가 발생했습니다.");
     }
   };
-
 
   const fetchReview = async () => {
     const id = searchParams.get("id");
@@ -149,6 +148,36 @@ const ProductDetail = (req, res) => {
         } catch(error) {
             alert("상품을 장바구니에 담는 중에 오류가 발생했습니다.");
         }
+        // searchParams.getAll("options").forEach(e => {
+        //     const str = e.split("_");
+        //     const option = {
+        //         optionGroupId: data.optionGroups[str[0]].id,
+        //         optionGroupName: data.optionGroups[str[0]].name,
+        //         optionId: data.optionGroups[str[0]].options[str[1]].id,
+        //         optionName: data.optionGroups[str[0]].options[str[1]].name,
+        //         optionPrice: data.optionGroups[str[0]].options[str[1]].price,
+        //     }
+        //     postOptions.push(option);
+        // });
+        const response = await axios.post(
+          link + "/carts?token=" + localStorage.getItem("uuid"),
+          {
+            productId: data.id,
+            productImage: data.images[0],
+            productName: data.name,
+            productPrice: data.price,
+            productDiscount: data.discountRate,
+            productQty: 1,
+            productSeller: data.seller.name,
+            productDelivery: data.deliveryPrice,
+            cartOption: [...postOptions],
+          }
+        );
+        console.log(postOptions);
+        alert("상품을 장바구니에 추가했습니다.");
+      } catch (error) {
+        alert("상품을 장바구니에 담는 중에 오류가 발생했습니다.");
+      }
     }
   }
 
@@ -210,7 +239,7 @@ const ProductDetail = (req, res) => {
                             {data.discountRate > 0 ? data.price + "원" : ""}
                           </div>
                           <div className="text-2xl">
-                            {data.discountRate > 0\
+                            {data.discountRate > 0
                               ? Math.round(
                                   (data.price * (100 - data.discountRate)) / 100
                                 ) + "원"
